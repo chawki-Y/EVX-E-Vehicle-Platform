@@ -734,3 +734,13 @@
     gap: 10px;
   }
 }
+
+/* Temporary test background */
+:host,
+.featured-vehicles,
+.statistics,
+.why-electric,
+.testimonials,
+.cta {
+  background: red !important;
+}
