@@ -1,0 +1,23 @@
+<header>
+    <img src="assets/EVX logo2.png" class="logo" alt="EVX Logo" (click)="navigateToHomePage()" 
+     appOptimizeImage 
+     [optimizeWidth]="200" 
+     [optimizeQuality]="90" 
+     [lazyLoad]="false">
+    <nav>
+      <ng-container *ngIf="f === 2; else createAccount">
+        <button class="icon-btn" (click)="navigateToLikes()" title="My Likes">
+          <i class="fas fa-heart"></i>
+          <span class="badge" *ngIf="likesCount > 0">{{ likesCount }}</span>
+        </button>
+        <button class="icon-btn" (click)="navigateToCart()" title="Shopping Cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+        </button>
+        <button class="icon-btn"><i class="fas fa-user"></i></button>
+      </ng-container>
+      <ng-template #createAccount>
+        <button class="icon-btn create-account">Create Account</button>
+      </ng-template>
+    </nav>
+  </header>

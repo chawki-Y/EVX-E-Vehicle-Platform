@@ -1,0 +1,608 @@
+<div class="tco-calculator-container">
+    <!-- Enhanced Hero Slideshow Section -->
+    <div class="hero-slideshow-section">
+        <div class="slideshow-container position-relative">
+            <!-- Background Gradient Overlay -->
+            <div class="gradient-overlay"></div>
+
+            <!-- Animated Background Pattern -->
+            <div class="background-pattern">
+                <div class="pattern-circle circle-1"></div>
+                <div class="pattern-circle circle-2"></div>
+                <div class="pattern-circle circle-3"></div>
+            </div>
+
+            <div class="slide-content">
+                <!-- Left side - Enhanced Vehicle image -->
+                <div class="slide-image-section">
+                    <div class="image-container">
+                        <div class="image-glow"></div>
+                        <img [src]="getCurrentHeroVehicle()?.image" [alt]="getCurrentHeroVehicle()?.name"
+                            class="vehicle-image">
+                        <div class="image-reflection"></div>
+                    </div>
+
+                    <!-- TCO Stats Cards -->
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value">${{ evCalculation.totalSavings | number:'1.0-0' }}</span>
+                                <span class="stat-label">Total Savings</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-value">{{ getSavingsPercentage() | number:'1.1-1' }}%</span>
+                                <span class="stat-label">Cost Reduction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side - Enhanced Content -->
+                <div class="slide-text-section">
+                    <div class="content-wrapper">
+                        <!-- Badge -->
+                        <div class="hero-badge">
+                            <i class="fas fa-calculator"></i>
+                            <span>TCO Calculator</span>
+                        </div>
+
+                        <div class="slide-header">
+                            <h2 class="hero-title">
+                                <span class="title-highlight">Total Cost</span> of Ownership
+                            </h2>
+                            <p class="hero-subtitle">Calculate and compare the true cost of electric vs gasoline vehicles over time</p>
+                            <div class="divider">
+                                <div class="divider-line"></div>
+                                <div class="divider-dot"></div>
+                                <div class="divider-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="vehicle-info">
+                            <h3 class="vehicle-name">Smart Financial Planning</h3>
+                            <div class="vehicle-details">
+                                <div class="price-container">
+                                    <span class="price-label">Make informed decisions</span>
+                                    <div class="vehicle-price">
+                                        Compare costs
+                                        <span class="price-suffix">over time</span>
+                                    </div>
+                                </div>
+
+                                <!-- Feature Tags -->
+                                <div class="feature-tags">
+                                    <span class="feature-tag">
+                                        <i class="fas fa-chart-bar"></i>
+                                        Real-time Calculations
+                                    </span>
+                                    <span class="feature-tag">
+                                        <i class="fas fa-balance-scale"></i>
+                                        Side-by-side Comparison
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" type="button" (click)="setActiveTab('calculator')">
+                                <i class="fas fa-calculator"></i>
+                                <span>Start Calculating</span>
+                                <div class="btn-glow"></div>
+                            </button>
+                            <button class="btn btn-outline" type="button" (click)="setActiveTab('comparison')">
+                                <i class="fas fa-chart-line"></i>
+                                <span>View Results</span>
+                            </button>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="slide-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill"
+                                    [style.width.%]="((currentSlide + 1) / heroVehicles.length) * 100"></div>
+                            </div>
+                            <span class="progress-text">{{ currentSlide + 1 }} / {{ heroVehicles.length }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Navigation Arrows -->
+            <button class="carousel-control prev" (click)="prevSlide()" type="button" aria-label="Previous slide">
+                <div class="control-inner">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="control-ripple"></div>
+            </button>
+            <button class="carousel-control next" (click)="nextSlide()" type="button" aria-label="Next slide">
+                <div class="control-inner">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="control-ripple"></div>
+            </button>
+
+            <!-- Enhanced Slide Indicators -->
+            <div class="slide-indicators">
+                <button *ngFor="let vehicle of heroVehicles; let i = index" class="indicator"
+                    [class.active]="i === currentSlide" (click)="currentSlide = i" type="button"
+                    [attr.aria-label]="'Go to slide ' + (i + 1)">
+                    <div class="indicator-progress"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content-wrapper">
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn" [class.active]="activeTab === 'calculator'" (click)="setActiveTab('calculator')">
+                <i class="fas fa-calculator"></i>
+                <span>Calculator</span>
+            </button>
+            <button class="tab-btn" [class.active]="activeTab === 'comparison'" (click)="setActiveTab('comparison')">
+                <i class="fas fa-chart-bar"></i>
+                <span>Comparison</span>
+            </button>
+            <button class="tab-btn" [class.active]="activeTab === 'insights'" (click)="setActiveTab('insights')">
+                <i class="fas fa-lightbulb"></i>
+                <span>Insights</span>
+            </button>
+        </div>
+
+        <!-- Calculator Tab -->
+        <div class="tab-content" [class.active]="activeTab === 'calculator'">
+            <!-- Vehicle Presets -->
+            <div class="preset-section">
+                <h3><i class="fas fa-magic"></i> Quick Presets</h3>
+                <div class="preset-buttons">
+                    <button class="preset-btn" (click)="loadVehiclePreset('economy')">
+                        <i class="fas fa-leaf"></i> Economy
+                    </button>
+                    <button class="preset-btn" (click)="loadVehiclePreset('luxury')">
+                        <i class="fas fa-crown"></i> Luxury
+                    </button>
+                    <button class="preset-btn" (click)="loadVehiclePreset('suv')">
+                        <i class="fas fa-truck"></i> SUV
+                    </button>
+                    <button class="preset-btn market-update" (click)="updateMarketData()">
+                        <i class="fas fa-sync-alt"></i> Update Market Data
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Market Data Display -->
+            <div class="market-data-section">
+                <h4><i class="fas fa-chart-line"></i> Current Market Data</h4>
+                <div class="market-stats">
+                    <div class="market-stat">
+                        <span class="label">Avg Electricity Rate:</span>
+                        <span class="value">${{ marketData.avgElectricityRate }}/kWh</span>
+                    </div>
+                    <div class="market-stat">
+                        <span class="label">Avg Gas Price:</span>
+                        <span class="value">${{ marketData.avgGasPrice }}/gal</span>
+                    </div>
+                    <div class="market-stat">
+                        <span class="label">EV Incentives:</span>
+                        <span class="value">${{ marketData.evIncentives | number:'1.0-0' }}</span>
+                    </div>
+                </div>
+                <div class="last-updated">
+                    <small><i class="fas fa-clock"></i> Last updated: {{ lastUpdated | date:'short' }}</small>
+                </div>
+            </div>
+            
+            <div class="calculator-section">
+                <div class="calculator-grid">
+                    <!-- Electric Vehicle Inputs -->
+                    <div class="input-section ev-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>Electric Vehicle</h3>
+                            <p>Configure your EV parameters</p>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-dollar-sign"></i>
+                                Vehicle Price: ${{ evPrice | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="evPrice" [min]="20000" [max]="100000" [step]="1000"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                Down Payment: ${{ evDownPayment | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="evDownPayment" [min]="0" [max]="25000" [step]="500"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-zap"></i>
+                                Efficiency: {{ evEfficiency }} mi/kWh
+                            </label>
+                            <p-slider [(ngModel)]="evEfficiency" [min]="2.0" [max]="5.0" [step]="0.1"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Loan Term: {{ evLoanTerm }} months
+                            </label>
+                            <p-slider [(ngModel)]="evLoanTerm" [min]="24" [max]="84" [step]="12"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-percentage"></i>
+                                Interest Rate: {{ evInterestRate }}%
+                            </label>
+                            <p-slider [(ngModel)]="evInterestRate" [min]="1" [max]="10" [step]="0.1"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-shield-alt"></i>
+                                Annual Insurance: ${{ evInsurance | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="evInsurance" [min]="500" [max]="3000" [step]="50"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-tools"></i>
+                                Annual Maintenance: ${{ evMaintenance | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="evMaintenance" [min]="200" [max]="2000" [step]="50"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-plug"></i>
+                                Electricity Rate: ${{ evElectricityCost | number:'1.2-2' }}/kWh
+                            </label>
+                            <p-slider [(ngModel)]="evElectricityCost" [min]="0.05" [max]="0.30" [step]="0.01"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-road"></i>
+                                Miles per Year: {{ evMilesPerYear | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="evMilesPerYear" [min]="5000" [max]="30000" [step]="1000"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+                    </div>
+
+                    <!-- ICE Vehicle Inputs -->
+                    <div class="input-section ice-section">
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                            <h3>Gasoline Vehicle</h3>
+                            <p>Configure comparison vehicle</p>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-dollar-sign"></i>
+                                Vehicle Price: ${{ icePrice | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="icePrice" [min]="15000" [max]="80000" [step]="1000"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-hand-holding-usd"></i>
+                                Down Payment: ${{ iceDownPayment | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="iceDownPayment" [min]="0" [max]="25000" [step]="500"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Loan Term: {{ iceLoanTerm }} months
+                            </label>
+                            <p-slider [(ngModel)]="iceLoanTerm" [min]="24" [max]="84" [step]="12"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-percentage"></i>
+                                Interest Rate: {{ iceInterestRate }}%
+                            </label>
+                            <p-slider [(ngModel)]="iceInterestRate" [min]="1" [max]="10" [step]="0.1"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-shield-alt"></i>
+                                Annual Insurance: ${{ iceInsurance | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="iceInsurance" [min]="500" [max]="3000" [step]="50"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-tools"></i>
+                                Annual Maintenance: ${{ iceMaintenance | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="iceMaintenance" [min]="500" [max]="3000" [step]="50"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-gas-pump"></i>
+                                Fuel Price: ${{ iceFuelCost | number:'1.2-2' }}/gallon
+                            </label>
+                            <p-slider [(ngModel)]="iceFuelCost" [min]="2.00" [max]="6.00" [step]="0.10"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-road"></i>
+                                Miles per Year: {{ iceMilesPerYear | number:'1.0-0' }}
+                            </label>
+                            <p-slider [(ngModel)]="iceMilesPerYear" [min]="5000" [max]="30000" [step]="1000"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Fuel Efficiency: {{ iceMpg }} MPG
+                            </label>
+                            <p-slider [(ngModel)]="iceMpg" [min]="15" [max]="50" [step]="1"
+                                (ngModelChange)="onInputChange()" styleClass="custom-slider">
+                            </p-slider>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-actions">
+                    <button class="btn btn-primary" (click)="calculateTCO()">
+                        <i class="fas fa-calculator"></i>
+                        <span>Recalculate</span>
+                    </button>
+                    <button class="btn btn-outline-secondary" (click)="resetCalculator()">
+                        <i class="fas fa-undo"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Tab -->
+        <div class="tab-content" [class.active]="activeTab === 'comparison'">
+            <div class="comparison-section">
+                <!-- Loading State -->
+                <div class="calculation-loading" *ngIf="isCalculating">
+                    <div class="loading-spinner">
+                        <i class="fas fa-calculator fa-spin"></i>
+                    </div>
+                    <p>Calculating TCO...</p>
+                </div>
+                
+                <div class="comparison-content" [class.calculating]="isCalculating">
+                    <h3><i class="fas fa-balance-scale"></i> TCO Comparison Results</h3>
+                    
+                    <div class="comparison-grid">
+                        <!-- EV Results -->
+                        <div class="result-card ev-card">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h3>Electric Vehicle</h3>
+                                <div class="card-badge ev-badge">EV</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="total-cost">
+                                    <span class="label">5-Year Total Cost</span>
+                                    <span class="amount">${{ evTotalCost | number:'1.0-0' }}</span>
+                                </div>
+                                <div class="cost-breakdown">
+                                    <div class="breakdown-item">
+                                        <span>Purchase Price</span>
+                                        <span>${{ evCostBreakdown.purchase | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Financing Costs</span>
+                                        <span>${{ evCostBreakdown.financing | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Insurance (5 years)</span>
+                                        <span>${{ evCostBreakdown.insurance | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Maintenance (5 years)</span>
+                                        <span>${{ evCostBreakdown.maintenance | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Energy (5 years)</span>
+                                        <span>${{ evCostBreakdown.energy | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Depreciation</span>
+                                        <span>${{ evCostBreakdown.depreciation | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item incentive">
+                                        <span>Tax Incentives</span>
+                                        <span>${{ evCostBreakdown.incentives | number:'1.0-0' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ICE Results -->
+                        <div class="result-card ice-card">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-gas-pump"></i>
+                                </div>
+                                <h3>Gasoline Vehicle</h3>
+                                <div class="card-badge ice-badge">ICE</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="total-cost">
+                                    <span class="label">5-Year Total Cost</span>
+                                    <span class="amount">${{ iceTotalCost | number:'1.0-0' }}</span>
+                                </div>
+                                <div class="cost-breakdown">
+                                    <div class="breakdown-item">
+                                        <span>Purchase Price</span>
+                                        <span>${{ iceCostBreakdown.purchase | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Financing Costs</span>
+                                        <span>${{ iceCostBreakdown.financing | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Insurance (5 years)</span>
+                                        <span>${{ iceCostBreakdown.insurance | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Maintenance (5 years)</span>
+                                        <span>${{ iceCostBreakdown.maintenance | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Fuel (5 years)</span>
+                                        <span>${{ iceCostBreakdown.fuel | number:'1.0-0' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Depreciation</span>
+                                        <span>${{ iceCostBreakdown.depreciation | number:'1.0-0' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Savings Results -->
+                        <div class="result-card savings-card">
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <h3>Your Savings</h3>
+                                <div class="card-badge savings-badge">{{ getSavingsPercentage() | number:'1.1-1' }}%</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="total-cost">
+                                    <span class="label">Total 5-Year Savings</span>
+                                    <span class="amount" [class.positive]="totalSavings > 0" [class.negative]="totalSavings < 0">
+                                        {{ totalSavings > 0 ? '+' : '' }}${{ totalSavings | number:'1.0-0' }}
+                                    </span>
+                                </div>
+                                <div class="cost-breakdown">
+                                    <div class="breakdown-item">
+                                        <span>Monthly Savings</span>
+                                        <span [class.positive]="monthlySavings > 0" [class.negative]="monthlySavings < 0">
+                                            {{ monthlySavings > 0 ? '+' : '' }}${{ monthlySavings | number:'1.0-0' }}
+                                        </span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Payback Period</span>
+                                        <span>{{ paybackPeriod > 0 ? (paybackPeriod | number:'1.1-1') + ' months' : 'Immediate' }}</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Environmental Impact</span>
+                                        <span>{{ (iceMilesPerYear * 5 / iceMpg * 19.6) | number:'1.0-0' }} lbs CO₂ saved</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Savings Summary -->
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights Tab -->
+        <div class="tab-content" [class.active]="activeTab === 'insights'">
+            <div class="insights-section">
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h4>Environmental Impact</h4>
+                        <p>Electric vehicles produce zero direct emissions and significantly reduce your carbon footprint compared to gasoline vehicles.</p>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4>Lower Maintenance</h4>
+                        <p>EVs have fewer moving parts, requiring less maintenance. No oil changes, spark plugs, or transmission repairs needed.</p>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Energy Efficiency</h4>
+                        <p>Electric motors are 3-4 times more efficient than internal combustion engines, converting more energy into motion.</p>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Stable Energy Costs</h4>
+                        <p>Electricity prices are more stable than gasoline prices, providing predictable operating costs over time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>

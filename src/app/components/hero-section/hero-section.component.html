@@ -1,0 +1,29 @@
+<div class="hero-section">
+  <app-search-bar></app-search-bar>
+
+  <button class="nav-arrow left" (click)="previousSlide()">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <div class="hero-content">
+    <div class="carousel">
+      <div 
+        *ngFor="let img of images; let i = index" 
+        class="hero-slide" 
+        [ngStyle]="{ 'background-image': 'url(' + img + ')' }"
+        [class.active]="currentSlide === i">
+      </div>
+    </div>
+
+    <div class="carousel-dots">
+      <span *ngFor="let dot of images; let i = index" 
+            [class.active]="currentSlide === i"
+            (click)="setSlide(i)">
+      </span>
+    </div>
+  </div>
+
+  <button class="nav-arrow right" (click)="nextSlide()">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+</div>

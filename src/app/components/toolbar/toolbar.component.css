@@ -1,0 +1,39 @@
+.toolbar {
+    position: fixed;
+    bottom: 27px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem; /* Adjust gap between buttons */
+    z-index: 2;
+  }
+  
+  .toolbar button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: 0.1s ease-in-out;
+    padding: 0 1.5rem;
+    position: relative; /* Ensures the pseudo-element (::after) is positioned correctly */
+  }
+  
+  /* Add separator between buttons, but not after the last button */
+  .toolbar button:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 0.5px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .toolbar button:hover {
+    color: var(--cyan-color);
+  }

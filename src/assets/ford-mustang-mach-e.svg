@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f6f6f6"/>
+  
+  <!-- Mustang Mach-E Body (Sporty SUV) -->
+  <path d="M135 245 Q135 205 175 185 L625 185 Q665 205 665 245 L665 285 Q665 305 645 305 L155 305 Q135 305 135 285 Z" fill="#FF6B35" stroke="#E55A2B" stroke-width="2"/>
+  
+  <!-- Mustang Roof (Coupe-like SUV) -->
+  <path d="M215 185 Q245 155 375 150 L425 150 Q555 155 585 185" fill="#FF7F50" stroke="#FF6B35" stroke-width="1"/>
+  
+  <!-- Sporty Windows -->
+  <path d="M235 185 Q255 165 365 160 L435 160 L565 165 Q585 185 585 185 L585 200 L235 200 Z" fill="#4169E1" opacity="0.8"/>
+  
+  <!-- Front Wheel -->
+  <circle cx="205" cy="285" r="40" fill="#1A1A1A" stroke="#333" stroke-width="4"/>
+  <circle cx="205" cy="285" r="25" fill="#444"/>
+  <circle cx="205" cy="285" r="12" fill="#666"/>
+  
+  <!-- Rear Wheel -->
+  <circle cx="595" cy="285" r="40" fill="#1A1A1A" stroke="#333" stroke-width="4"/>
+  <circle cx="595" cy="285" r="25" fill="#444"/>
+  <circle cx="595" cy="285" r="12" fill="#666"/>
+  
+  <!-- Mustang Signature Headlights -->
+  <path d="M645 235 Q655 230 665 235 L665 245 Q655 250 645 245 Z" fill="#FFF" opacity="0.95"/>
+  <path d="M645 250 Q655 245 665 250 L665 260 Q655 265 645 260 Z" fill="#FFF" opacity="0.95"/>
+  <path d="M645 265 Q655 260 665 265 L665 275 Q655 280 645 275 Z" fill="#FFF" opacity="0.95"/>
+  
+  <!-- Ford/Mustang Logo Area -->
+  <circle cx="400" cy="225" r="16" fill="#003366" stroke="#002244" stroke-width="2"/>
+  <path d="M390 220 L410 220 L410 225 L395 225 L395 230 L405 230 L405 235 L390 235 Z" fill="#FFF"/>
+  
+  <!-- Mustang Galloping Horse Silhouette -->
+  <path d="M385 215 Q390 210 395 215 L400 213 L405 215 Q410 210 415 215 L412 220 L388 220 Z" fill="#C0C0C0"/>
+  
+  <!-- Side Scoops -->
+  <path d="M320 250 Q330 245 340 250 L340 260 Q330 265 320 260 Z" fill="#333"/>
+  <path d="M460 250 Q470 245 480 250 L480 260 Q470 265 460 260 Z" fill="#333"/>
+  
+  <!-- Ground Shadow -->
+  <ellipse cx="400" cy="330" rx="275" ry="20" fill="#000" opacity="0.12"/>
+</svg>

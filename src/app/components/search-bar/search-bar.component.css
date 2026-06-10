@@ -1,0 +1,104 @@
+.search-container {
+  position: absolute;
+  width: 40%;
+  left: 30%;
+  top: 6%;
+  z-index: 3;
+}
+
+.search-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+  
+/* 🖥️ Clean Input Field */
+.search-container input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  padding-right: 2rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  backdrop-filter: blur(10px); /* Glass effect */
+  transition: 
+    border 0.3s ease-in-out, 
+    box-shadow 0.3s ease-in-out, 
+    transform 0.2s ease-in-out
+}
+  
+.search-container input:focus::placeholder {
+  color: transparent;
+  transition: color 0.2s ease-in-out;
+}
+
+.search-container input:focus {
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+  
+.search-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Search Suggestion Bubbles - Clean wrap layout without scrolling */
+.search-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+  max-width: 100%;
+}
+  
+.suggestion-bubble {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+  
+.suggestion-bubble:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+  
+.suggestion-bubble:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    width: 60%;
+    left: 20%;
+  }
+  
+  .suggestion-bubble {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+  
+  .search-suggestions {
+    gap: 6px;
+    margin-top: 10px;
+    justify-content: center;
+  }
+}

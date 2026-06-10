@@ -1,0 +1,117 @@
+<div class="ev-website">
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading article...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error && !isLoading" class="error-container">
+            <div class="error-icon">⚠️</div>
+            <h2 class="error-title">Article Not Found</h2>
+            <p class="error-text">{{ error }}</p>
+            <div class="error-actions">
+                <button (click)="goBack()" class="back-button">Back to Resources</button>
+            </div>
+        </div>
+
+        <!-- Article Content -->
+        <article *ngIf="article && !isLoading && !error" class="article-container">
+            <!-- Article Header -->
+            <header class="article-header">
+                <nav class="breadcrumb">
+                    <a (click)="goBack()" class="breadcrumb-link">Resources</a>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-current">{{ article.category }}</span>
+                </nav>
+                
+                <div class="article-meta">
+                    <span class="article-category">{{ article.category }}</span>
+                    <div class="article-tags" *ngIf="article.tags && article.tags.length > 0">
+                        <span *ngFor="let tag of article.tags" class="tag">{{ tag }}</span>
+                    </div>
+                </div>
+                
+                <h1 class="article-title">{{ article.title }}</h1>
+                
+                <div class="article-info">
+                    <div class="author-info">
+                        <div class="author-avatar">{{ article.author.charAt(0) }}</div>
+                        <div class="author-details">
+                            <span class="author-name">{{ article.author }}</span>
+                            <span class="publish-date">{{ formatDate(article.publishedAt) }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-actions">
+                        <button (click)="shareArticle()" class="share-button">
+                            <i class="fas fa-share-alt"></i>
+                            Share
+                        </button>
+                        <span class="view-count">{{ article.viewCount }} views</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Article Image -->
+            <div *ngIf="article.image" class="article-image-container">
+                <img [src]="article.image" [alt]="article.title" class="article-image">
+            </div>
+
+            <!-- Article Body -->
+            <div class="article-body">
+                <div class="article-excerpt" *ngIf="article.excerpt">
+                    <p class="excerpt-text">{{ article.excerpt }}</p>
+                </div>
+                
+                <div class="article-content" [innerHTML]="article.content"></div>
+            </div>
+
+            <!-- Article Footer -->
+            <footer class="article-footer">
+                <div class="article-footer-meta">
+                    <span class="last-updated">Published {{ getRelativeTime(article.publishedAt) }}</span>
+                </div>
+                
+                <div class="article-footer-actions">
+                    <button (click)="shareArticle()" class="share-button-footer">
+                        <i class="fas fa-share-alt"></i>
+                        Share this article
+                    </button>
+                </div>
+            </footer>
+        </article>
+
+        <!-- Related News Section -->
+        <section *ngIf="relatedNews.length > 0 && !isLoading && !error" class="related-news-section">
+            <h2 class="section-title">Related Articles</h2>
+            <div class="related-news-grid">
+                <div *ngFor="let relatedArticle of relatedNews" 
+                     class="related-news-card" 
+                     (click)="onRelatedNewsClick(relatedArticle)">
+                    <div *ngIf="relatedArticle.image" class="related-news-image">
+                        <img [src]="relatedArticle.image" [alt]="relatedArticle.title" loading="lazy">
+                    </div>
+                    <div class="related-news-content">
+                        <span class="related-news-category">{{ relatedArticle.category }}</span>
+                        <h3 class="related-news-title">{{ relatedArticle.title }}</h3>
+                        <span class="related-news-date">{{ getRelativeTime(relatedArticle.publishedAt) }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Back to Resources -->
+        <div *ngIf="!isLoading && !error" class="back-to-resources">
+            <button (click)="goBack()" class="back-to-resources-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Resources
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>

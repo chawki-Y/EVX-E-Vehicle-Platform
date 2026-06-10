@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f0f0f0"/>
+  
+  <!-- Car Body (Sports Car Profile) -->
+  <path d="M140 260 Q140 220 180 200 L620 200 Q660 220 660 260 L660 285 Q660 300 645 300 L155 300 Q140 300 140 285 Z" fill="#8B0000" stroke="#660000" stroke-width="2"/>
+  
+  <!-- Car Roof (Lower Sports Profile) -->
+  <path d="M250 200 Q280 170 380 165 L420 165 Q520 170 550 200" fill="#A52A2A" stroke="#8B0000" stroke-width="1"/>
+  
+  <!-- Windows (Sleeker) -->
+  <path d="M270 200 Q290 180 370 175 L430 175 Q510 180 530 200 L530 210 L270 210 Z" fill="#4682B4" opacity="0.7"/>
+  
+  <!-- Front Wheel -->
+  <circle cx="210" cy="285" r="38" fill="#2F2F2F" stroke="#444" stroke-width="3"/>
+  <circle cx="210" cy="285" r="25" fill="#555"/>
+  <circle cx="210" cy="285" r="12" fill="#777"/>
+  
+  <!-- Rear Wheel -->
+  <circle cx="590" cy="285" r="38" fill="#2F2F2F" stroke="#444" stroke-width="3"/>
+  <circle cx="590" cy="285" r="25" fill="#555"/>
+  <circle cx="590" cy="285" r="12" fill="#777"/>
+  
+  <!-- Aggressive Headlights -->
+  <path d="M650 235 L670 240 L670 250 L650 255 Z" fill="#FFF" opacity="0.95"/>
+  <path d="M650 255 L670 260 L670 270 L650 275 Z" fill="#FFF" opacity="0.95"/>
+  
+  <!-- Porsche Logo Area -->
+  <circle cx="400" cy="230" r="15" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <text x="400" y="235" text-anchor="middle" fill="#8B0000" font-family="Arial, sans-serif" font-size="10" font-weight="bold">P</text>
+  
+  <!-- Sports Car Air Intake -->
+  <rect x="630" y="270" width="25" height="8" fill="#333" rx="2"/>
+  
+  <!-- Side Vents -->
+  <rect x="300" y="240" width="15" height="3" fill="#333" rx="1"/>
+  <rect x="300" y="245" width="15" height="3" fill="#333" rx="1"/>
+  <rect x="485" y="240" width="15" height="3" fill="#333" rx="1"/>
+  <rect x="485" y="245" width="15" height="3" fill="#333" rx="1"/>
+  
+  <!-- Ground Shadow -->
+  <ellipse cx="400" cy="325" rx="260" ry="18" fill="#000" opacity="0.15"/>
+</svg>

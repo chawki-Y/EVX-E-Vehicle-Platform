@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>EVK - Electric Vehicle Showroom</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></noscript>
+    
+    <!-- Critical CSS - inline the most important styles -->
+    <style>
+        /* Critical CSS to prevent FOUC */
+        :root {
+            --cyan-color: #6ccbeb;
+            --grey-color: #4c4c4d;
+            --light-gray: #D9D9D9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Critical layout styles */
+        app-root {
+            display: block;
+            min-height: 100vh;
+        }
+        
+
+        
+        /* Critical header styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 4rem;
+            background: white;
+            height: 16vh;
+            max-height: 110px;
+            border-bottom: 8px solid var(--cyan-color);
+        }
+        
+        /* Critical container styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <app-root></app-root>
+</body>
+</html>

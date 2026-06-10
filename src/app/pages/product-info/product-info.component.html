@@ -1,0 +1,305 @@
+<div class="product-info-container">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    <p>Loading product information...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !loading">
+    <div class="error-content">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h3>Error Loading Product</h3>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="goBack()" type="button">
+        <i class="fas fa-arrow-left me-2"></i>Back to Search
+      </button>
+    </div>
+  </div>
+
+  <!-- Product Content -->
+  <div class="product-content" *ngIf="product && !loading && !error">
+    <!-- Header with Back Button -->
+    <div class="product-header">
+      <button class="btn btn-outline back-btn" (click)="goBack()" type="button">
+        <i class="fas fa-arrow-left me-2"></i>Back to Search
+      </button>
+      <div class="breadcrumb">
+        <span class="breadcrumb-item">Home</span>
+        <i class="fas fa-chevron-right"></i>
+        <span class="breadcrumb-item">Search</span>
+        <i class="fas fa-chevron-right"></i>
+        <span class="breadcrumb-item active">{{ product.name }}</span>
+      </div>
+    </div>
+
+    <!-- Main Product Section -->
+    <div class="product-main">
+      <!-- Left Side - Image Gallery -->
+      <div class="product-image-section">
+        <div class="image-gallery">
+          <!-- Main Image Display -->
+          <div class="main-image-container">
+            <app-optimized-image 
+              [src]="getCurrentImage()" 
+              [alt]="product.name" 
+              imageClass="product-image"
+              priority="high"
+              width="100%"
+              height="400px">
+            </app-optimized-image>
+            <div class="image-badges">
+              <span class="badge electric-badge" *ngIf="isVehicle() && getVehicle()?.isElectric">
+                <i class="fas fa-bolt"></i> Electric
+              </span>
+              <span class="badge condition-badge" *ngIf="isVehicle()"
+                [class.new-badge]="getVehicle()?.condition === 'new'">
+                {{ getVehicle()?.condition | titlecase }}
+              </span>
+              <span class="badge special-badge" *ngIf="product.badge">
+                {{ product.badge }}
+              </span>
+            </div>
+            <!-- Navigation Arrows -->
+            <div class="image-navigation" *ngIf="getProductImages().length > 1">
+              <button class="nav-btn prev-btn" (click)="previousImage()" type="button">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="nav-btn next-btn" (click)="nextImage()" type="button">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <!-- Thumbnail Gallery -->
+          <div class="thumbnail-gallery" *ngIf="getProductImages().length > 1">
+            <div class="thumbnail-container">
+              <app-optimized-image 
+                *ngFor="let image of getProductImages(); let i = index" 
+                [src]="image"
+                [alt]="product.name + ' - Image ' + (i + 1)" 
+                imageClass="thumbnail-image"
+                [class.active]="i === currentImageIndex" 
+                (click)="selectImage(i)"
+                priority="low"
+                width="80px"
+                height="60px">
+              </app-optimized-image>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Details -->
+      <div class="product-details-section">
+        <!-- Title and Brand -->
+        <div class="product-title-section">
+          <h1 class="product-title">{{ product.name }}</h1>
+          <p class="product-brand">{{ product.brand }}</p>
+        </div>
+
+        <!-- Price Section -->
+        <div class="price-section">
+          <div class="current-price">
+            {{ product.price | currency:'USD':'symbol':'1.0-0' }}
+          </div>
+          <div class="original-price" *ngIf="product.originalPrice && product.originalPrice > product.price">
+            <span class="strikethrough">{{ product.originalPrice | currency:'USD':'symbol':'1.0-0' }}</span>
+            <span class="discount"><i class="fas fa-tag me-2"></i>Save {{ product.originalPrice - product.price |
+              currency:'USD':'symbol':'1.0-0'
+              }}</span>
+          </div>
+        </div>
+
+        <!-- Rating Section -->
+        <div class="rating-section">
+          <div class="stars">
+            <i *ngFor="let star of getStarArray(product.rating)" [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+          </div>
+          <span class="rating-text">{{ product.rating }} ({{ product.reviews }} reviews)</span>
+        </div>
+
+        <!-- Description Section -->
+        <div class="description-section" *ngIf="product.description">
+          <h3>Description</h3>
+          <p class="description-text">{{ product.description }}</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn btn-outline like-btn" (click)="onToggleLike()" type="button"
+            [class.liked]="product.isLiked">
+            <i [class]="product.isLiked ? 'fas fa-heart me-2' : 'far fa-heart me-2'"></i>
+            {{ product.isLiked ? 'Liked' : 'Like' }}
+          </button>
+          <button class="btn btn-secondary test-drive-btn" (click)="onBookTestDrive()" type="button"
+            *ngIf="isVehicle()">
+            <i class="fas fa-car me-2"></i>
+            Book Test Drive
+          </button>
+          <button class="btn btn-primary add-to-cart-btn" (click)="onAddToCart()" type="button">
+            <i class="fas fa-shopping-cart me-2"></i>
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Information Sections -->
+    <div class="product-info-sections">
+      <!-- Vehicle Specifications -->
+      <div class="info-section specs-section" *ngIf="isVehicle()">
+        <h3><i class="fas fa-cog me-2" style="margin-right: 10px;"></i>Specifications</h3>
+        <div class="specs-grid">
+          <div class="spec-item">
+            <i class="fas fa-calendar-alt spec-icon"></i>
+            <div class="spec-content">
+              <span class="spec-label">Year</span>
+              <span class="spec-value">{{ getVehicle()?.year }}</span>
+            </div>
+          </div>
+          <div class="spec-item">
+            <i class="fas fa-road spec-icon"></i>
+            <div class="spec-content">
+              <span class="spec-label">Range</span>
+              <span class="spec-value">{{ getVehicle()?.range }} miles</span>
+            </div>
+          </div>
+          <div class="spec-item">
+            <i class="fas fa-car spec-icon"></i>
+            <div class="spec-content">
+              <span class="spec-label">Category</span>
+              <span class="spec-value">{{ product.category }}</span>
+            </div>
+          </div>
+          <div class="spec-item" *ngIf="getVehicle()?.batterySize">
+            <i class="fas fa-battery-full spec-icon"></i>
+            <div class="spec-content">
+              <span class="spec-label">Battery</span>
+              <span class="spec-value">{{ getVehicle()?.batterySize }}</span>
+            </div>
+          </div>
+          <div class="spec-item" *ngIf="getVehicle()?.chargingTime">
+            <i class="fas fa-charging-station spec-icon"></i>
+            <div class="spec-content">
+              <span class="spec-label">Charging</span>
+              <span class="spec-value">{{ getVehicle()?.chargingTime }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory Compatibility -->
+      <div class="info-section compatibility-section" *ngIf="isAccessory() && getAccessory()?.compatibility">
+        <h3><i class="fas fa-puzzle-piece me-2"></i>Compatibility</h3>
+        <div class="compatibility-list">
+          <div class="compatibility-item" *ngFor="let item of getAccessory()?.compatibility">
+            <i class="fas fa-check-circle me-2"></i>
+            <span>{{ item }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div class="info-section features-section" *ngIf="product.features && product.features.length > 0">
+        <h3><i class="fas fa-star me-2" style="margin-right: 10px;"></i>Key Features</h3>
+        <div class="features-list">
+          <div class="feature-item" *ngFor="let feature of product.features">
+            <i class="fas fa-check-circle me-2"></i>
+            <span>{{ feature }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dealer Information -->
+      <div class="info-section dealer-section" *ngIf="product.dealer">
+        <h3><i class="fas fa-store me-2" style="margin-right: 10px;"></i>Dealer Information</h3>
+        <div class="dealer-card">
+          <div class="dealer-header">
+            <div class="dealer-name">
+              <span class="name">{{ product.dealer.name }}</span>
+              <i class="fas fa-check-circle verified-icon" *ngIf="product.dealer.verified" title="Verified Dealer"></i>
+            </div>
+            <div class="dealer-rating">
+              <div class="stars">
+                <i *ngFor="let star of getStarArray(product.dealer.rating)"
+                  [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+              </div>
+              <span class="rating-value">{{ product.dealer.rating }}</span>
+            </div>
+          </div>
+          <div class="dealer-details">
+            <div class="dealer-info-item">
+              <i class="fas fa-map-marker-alt me-2"></i>
+              <span>{{ product.dealer.location }}</span>
+            </div>
+            <div class="dealer-info-item">
+              <i class="fas fa-phone me-2"></i>
+              <span>{{ product.dealer.phone }}</span>
+            </div>
+            <div class="dealer-info-item">
+              <i class="fas fa-envelope me-2"></i>
+              <span>{{ product.dealer.email }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Products from this Dealer -->
+      <div class="info-section other-products-section"
+        *ngIf="product.dealer && (otherProducts.length > 0 || loadingOtherProducts)">
+        <h3><i class="fas fa-shopping-bag me-2" style="margin-right: 10px;"></i>Other Products from {{
+          product.dealer.name }}</h3>
+
+        <!-- Loading State -->
+        <div class="other-products-loading" *ngIf="loadingOtherProducts">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading other products...</p>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="other-products-grid" *ngIf="!loadingOtherProducts && otherProducts.length > 0">
+          <div class="other-product-card" *ngFor="let otherProduct of otherProducts"
+            (click)="onViewProduct(otherProduct)">
+            <div class="other-product-image">
+              <img [src]="otherProduct.image" [alt]="otherProduct.name" class="product-img">
+              <div class="product-type-badge">
+                <span class="type-label">{{ otherProduct.type === 'vehicle' ? 'Vehicle' : 'Accessory' }}</span>
+              </div>
+            </div>
+            <div class="other-product-info">
+              <h4 class="other-product-name">{{ otherProduct.name }}</h4>
+              <p class="other-product-brand">{{ otherProduct.brand }}</p>
+              <div class="other-product-price">
+                <span class="price">{{ otherProduct.price | currency:'USD':'symbol':'1.0-0' }}</span>
+                <span class="original-price"
+                  *ngIf="otherProduct.originalPrice && otherProduct.originalPrice > otherProduct.price">
+                  {{ otherProduct.originalPrice | currency:'USD':'symbol':'1.0-0' }}
+                </span>
+              </div>
+              <div class="other-product-rating">
+                <div class="stars">
+                  <i *ngFor="let star of getStarArray(otherProduct.rating)"
+                    [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+                </div>
+                <span class="rating-text">{{ otherProduct.rating }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Other Products Message -->
+        <div class="no-other-products" *ngIf="!loadingOtherProducts && otherProducts.length === 0">
+          <i class="fas fa-info-circle me-2"></i>
+          <p>No other products available from this dealer at the moment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

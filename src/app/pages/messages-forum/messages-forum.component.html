@@ -1,0 +1,285 @@
+<div class="app-container">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-icons">
+            <div class="icon-container active">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-comment"></i>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-bookmark"></i>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-trash"></i>
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-folder"></i>
+            </div>
+        </div>
+        
+        <!-- Conversations List -->
+        <div class="conversations-container">
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+            
+            <div class="conversations-header">
+                <span>All messages</span>
+                <span class="badge">5</span>
+                <i class="fas fa-filter"></i>
+            </div>
+            
+            <div class="conversations-list">
+                <!-- Private Chats -->
+                <div class="conversation-category">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <h3>Private</h3>
+                            <p>Personal chats</p>
+                        </div>
+                        <div class="category-meta">
+                            <span class="date">5 JAN 24</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="category-messages">
+                        <div class="message-count">
+                            <i class="fas fa-comment"></i>
+                            <span>6 Messages</span>
+                        </div>
+                        
+                        <div class="conversation-item">
+                            <div class="avatar">
+                                <img src="../../../assets/person1.jpg" alt="Anthony">
+                            </div>
+                            <div class="conversation-content">
+                                <div class="conversation-header">
+                                    <h4>Anthony</h4>
+                                    <span class="time">15:34</span>
+                                </div>
+                                <p class="preview">Thank you, will get back...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-item">
+                            <div class="avatar">
+                                <img src="../../../assets/person3.jpg" alt="Layla">
+                            </div>
+                            <div class="conversation-content">
+                                <div class="conversation-header">
+                                    <h4>Layla</h4>
+                                    <span class="time">15:26</span>
+                                </div>
+                                <p class="preview">Yes, noted.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- EV Communities -->
+                <div class="conversation-category">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <h3>EV Communities</h3>
+                            <p>Forums</p>
+                        </div>
+                        <div class="category-meta">
+                            <span class="date">3 JAN 24</span>
+                        </div>
+                    </div>
+                    <div class="category-messages">
+                        <div class="message-count">
+                            <i class="fas fa-comment"></i>
+                            <span>23 Messages</span>
+                        </div>
+                        
+                        <div class="conversation-item">
+                            <div class="avatar">
+                                <img src="../../../assets/favicon3.png" alt="EVX">
+                            </div>
+                            <div class="conversation-content">
+                                <div class="conversation-header">
+                                    <h4>EVX</h4>
+                                    <span class="time">13:54</span>
+                                </div>
+                                <p class="preview">We have a very important...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="conversation-item">
+                            <div class="avatar">
+                                <img src="../../../assets/ElectricCar1.jpg" alt="EV Owners">
+                            </div>
+                            <div class="conversation-content">
+                                <div class="conversation-header">
+                                    <h4>EV Owners</h4>
+                                    <span class="time">13:26</span>
+                                </div>
+                                <p class="preview">Yes, I understand.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Support & Help -->
+                <div class="conversation-category">
+                    <div class="category-header">
+                        <div class="category-info">
+                            <h3>Support & Help</h3>
+                            <p>Customer support</p>
+                        </div>
+                        <div class="category-meta">
+                            <span class="date">1 JAN 24</span>
+                        </div>
+                    </div>
+                    <div class="category-messages">
+                        <div class="message-count">
+                            <i class="fas fa-comment"></i>
+                            <span>2 Messages</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Chat Area -->
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="user-info">
+                <div class="avatar large">
+                    <img src="../../../assets/person1.jpg" alt="Antony">
+                </div>
+                <div class="user-details">
+                    <h2>Anthony</h2>
+                    <p class="status">Offline • Last seen 3 hours ago</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chat-messages">
+            <div class="message-group">
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Hi Alex! Kifak</p>
+                    </div>
+                    <div class="message-time">Yesterday 15:40</div>
+                </div>
+                
+                <div class="message received">
+                    <div class="message-content">
+                        <p>Bteshrab shi?</p>
+                    </div>
+                    <div class="message-time">Yesterday 15:41</div>
+                </div>
+            </div>
+            
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>Hello, wanted to as more about...</p>
+                    </div>
+                    <div class="message-time">Yesterday 14:18 PM</div>
+                </div>
+            </div>
+            
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>Thank you, will get back to you shortly!</p>
+                    </div>
+                    <div class="message-time">Yesterday 15:24 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>Okay, I'm back, i want to know more about this product please</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:04 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>What about the quality, price etc...</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:05 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>What about the quality, price etc...</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:05 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>What about the quality, price etc...</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:05 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>What about the quality, price etc...</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:05 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>What about the quality, price etc...</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:05 PM</div>
+                </div>
+            </div>
+
+            <div class="message-group">
+                <div class="message sent">
+                    <div class="message-content">
+                        <p>What about the quality, price etc...</p>
+                    </div>
+                    <div class="message-time">Yesterday 17:05 PM</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Message Input -->
+        <div class="message-input-container">
+            <div class="message-input">
+                <input type="text" placeholder="Type a message here...">
+                <button class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>

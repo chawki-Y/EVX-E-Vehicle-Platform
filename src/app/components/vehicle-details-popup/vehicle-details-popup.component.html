@@ -1,0 +1,165 @@
+<div class="popup-overlay" *ngIf="isVisible" (click)="onBackdropClick($event)">
+  <div class="popup-container" *ngIf="vehicle">
+    <!-- Header -->
+    <div class="popup-header">
+      <div class="header-content">
+        <h2 class="vehicle-title">{{ vehicle.name }}</h2>
+        <span class="vehicle-brand">{{ vehicle.brand }}</span>
+      </div>
+      <button class="close-btn" (click)="onClose()" type="button">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="popup-content">
+      <!-- Vehicle Image -->
+      <div class="image-section">
+        <div class="image-container">
+          <img [src]="vehicle.image" [alt]="vehicle.name" class="vehicle-image">
+          <div class="image-badges">
+            <span class="badge electric-badge" *ngIf="vehicle.isElectric">
+              <i class="fas fa-bolt"></i> Electric
+            </span>
+            <span class="badge condition-badge" [class.new-badge]="vehicle.condition === 'new'">
+              {{ vehicle.condition | titlecase }}
+            </span>
+            <span class="badge special-badge" *ngIf="vehicle.badge">
+              {{ vehicle.badge }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehicle Details -->
+      <div class="details-section">
+        <!-- Price Section -->
+        <div class="price-section">
+          <div class="current-price">
+            ${{ vehicle.price | currency:'USD':'symbol':'1.0-0' }}
+          </div>
+          <div class="original-price" *ngIf="vehicle.originalPrice && vehicle.originalPrice > vehicle.price">
+            <span class="strikethrough">${{ vehicle.originalPrice | currency:'USD':'symbol':'1.0-0' }}</span>
+            <span class="discount">Save ${{ vehicle.originalPrice - vehicle.price | currency:'USD':'symbol':'1.0-0'
+              }}</span>
+          </div>
+        </div>
+
+        <!-- Rating Section -->
+        <div class="rating-section">
+          <div class="stars">
+            <i *ngFor="let star of getStarArray(vehicle.rating)" [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+          </div>
+          <span class="rating-text">{{ vehicle.rating }} ({{ vehicle.reviews }} reviews)</span>
+        </div>
+
+        <!-- Dealer Information -->
+        <div class="dealer-section" *ngIf="vehicle.dealer">
+          <h3>Dealer Information</h3>
+          <div class="dealer-card">
+            <div class="dealer-header">
+              <div class="dealer-name">
+                <i class="fas fa-store dealer-icon" style="margin-right: 10px;"></i>
+                <span class="name">{{ vehicle.dealer.name }}</span>
+                <i class="fas fa-check-circle verified-icon" *ngIf="vehicle.dealer.verified"
+                  title="Verified Dealer"></i>
+              </div>
+              <div class="dealer-rating">
+                <div class="stars">
+                  <i *ngFor="let star of getStarArray(vehicle.dealer.rating)"
+                    [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+                </div>
+                <span class="rating-value">{{ vehicle.dealer.rating }}</span>
+              </div>
+            </div>
+            <div class="dealer-details">
+              <div class="dealer-info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ vehicle.dealer.location }}</span>
+              </div>
+              <div class="dealer-info-item">
+                <i class="fas fa-phone"></i>
+                <span>{{ vehicle.dealer.phone }}</span>
+              </div>
+              <div class="dealer-info-item">
+                <i class="fas fa-envelope"></i>
+                <span>{{ vehicle.dealer.email }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specifications -->
+        <div class="specs-section">
+          <h3>Specifications</h3>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <i class="fas fa-calendar-alt spec-icon"></i>
+              <div class="spec-content">
+                <span class="spec-label">Year</span>
+                <span class="spec-value">{{ vehicle.year }}</span>
+              </div>
+            </div>
+            <div class="spec-item">
+              <i class="fas fa-road spec-icon" style="margin-right: 10px;"></i>
+              <div class="spec-content">
+                <span class="spec-label">Range</span>
+                <span class="spec-value">{{ vehicle.range }} miles</span>
+              </div>
+            </div>
+            <div class="spec-item">
+              <i class="fas fa-car spec-icon"></i>
+              <div class="spec-content">
+                <span class="spec-label">Category</span>
+                <span class="spec-value">{{ vehicle.category }}</span>
+              </div>
+            </div>
+            <div class="spec-item" *ngIf="vehicle.batterySize">
+              <i class="fas fa-battery-full spec-icon"></i>
+              <div class="spec-content">
+                <span class="spec-label">Battery</span>
+                <span class="spec-value">{{ vehicle.batterySize }}</span>
+              </div>
+            </div>
+            <div class="spec-item" *ngIf="vehicle.chargingTime">
+              <i class="fas fa-charging-station spec-icon"></i>
+              <div class="spec-content">
+                <span class="spec-label">Charging</span>
+                <span class="spec-value">{{ vehicle.chargingTime }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section" *ngIf="vehicle.features && vehicle.features.length > 0">
+          <h3>Key Features</h3>
+          <div class="features-list">
+            <div class="feature-item" *ngFor="let feature of vehicle.features">
+              <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
+              <span>{{ feature }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="popup-footer">
+      <div class="action-buttons">
+        <button class="btn btn-outline" (click)="onToggleLike()" type="button" [class.liked]="vehicle.isLiked">
+          <i [class]="vehicle.isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+          {{ vehicle.isLiked ? 'Liked' : 'Like' }}
+        </button>
+        <button class="btn btn-outline" (click)="onToggleCompare()" type="button" [class.compared]="vehicle.isCompared">
+          <i class="fas fa-balance-scale"></i>
+          {{ vehicle.isCompared ? 'Remove Compare' : 'Compare' }}
+        </button>
+        <button class="btn btn-primary" (click)="onAddToCart()" type="button">
+          <i class="fas fa-shopping-cart"></i>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

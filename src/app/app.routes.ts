@@ -1,0 +1,29 @@
+import { Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { AdvancedSearchComponent } from './pages/advanced-search/advanced-search.component';
+import { TcoCalculatorComponent } from './pages/tco-calculator/tco-calculator.component';
+import { ResourcesComponent } from './pages/resources/resources.component';
+import { CourseDetailComponent } from './pages/course-detail/course-detail.component';
+import { NewsArticleComponent } from './pages/news-article/news-article.component';
+import { MessagesForumComponent } from './pages/messages-forum/messages-forum.component';
+import { LikesComponent } from './pages/likes/likes.component';
+import { CartComponent } from './pages/cart/cart.component';
+import { ProductInfoComponent } from './pages/product-info/product-info.component';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'advanced-search', component: AdvancedSearchComponent },
+  { path: 'tco-calculator', component: TcoCalculatorComponent },
+  { path: 'resources', component: ResourcesComponent },
+  { path: 'course/:id', component: CourseDetailComponent },
+  { path: 'news/:slug', component: NewsArticleComponent },
+  { path: 'news/:id', component: NewsArticleComponent },
+  { path: 'messages-forum/:id', component: MessagesForumComponent },
+  { path: 'likes', component: LikesComponent },
+  { path: 'cart', component: CartComponent },
+  { path: 'product/:type/:id', component: ProductInfoComponent },
+  { path: 'vehicle/:id', component: ProductInfoComponent },
+  { path: 'vehicle', component: ProductInfoComponent },
+  { path: 'accessory/:id', component: ProductInfoComponent },
+  { path: '**', redirectTo: '' }
+];

@@ -1,0 +1,126 @@
+<!-- Vehicle Comparison Modal -->
+<div class="comparison-overlay" *ngIf="isVisible" (click)="onClose()">
+  <div class="comparison-modal" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="comparison-header">
+      <h2 class="comparison-title">
+        <i class="fas fa-balance-scale me-2"></i>
+        Vehicle Comparison
+      </h2>
+      <button class="close-btn" (click)="onClose()" type="button" aria-label="Close comparison">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="comparison-content">
+      <!-- No vehicles selected state -->
+      <div class="no-vehicles-state" *ngIf="comparedVehicles.length === 0">
+        <div class="no-vehicles-content">
+          <i class="fas fa-balance-scale no-vehicles-icon"></i>
+          <h3>No vehicles selected for comparison</h3>
+          <p class="text-muted">Select vehicles from the search results to compare them side by side.</p>
+        </div>
+      </div>
+
+      <!-- Single vehicle state -->
+      <div class="single-vehicle-state" *ngIf="comparedVehicles.length === 1">
+        <div class="single-vehicle-content">
+          <i class="fas fa-plus-circle single-vehicle-icon"></i>
+          <h3>Add another vehicle to compare</h3>
+          <p class="text-muted">You have selected 1 vehicle. Add one more to start comparing.</p>
+        </div>
+      </div>
+
+      <!-- Comparison table -->
+      <div class="comparison-table-container" *ngIf="comparedVehicles.length === 2">
+        <!-- Vehicle headers -->
+        <div class="vehicle-headers">
+          <div class="vehicle-header" *ngFor="let vehicle of comparedVehicles; let i = index">
+            <div class="vehicle-image-container">
+              <img [src]="vehicle.image" [alt]="vehicle.name" class="vehicle-image">
+              <button class="remove-vehicle-btn" (click)="removeVehicle.emit(vehicle)" 
+                      type="button" title="Remove from comparison">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <div class="vehicle-info">
+              <h3 class="vehicle-name">{{ vehicle.name }}</h3>
+              <div class="vehicle-price">{{ vehicle.price | currency:'USD':'symbol':'1.0-0' }}</div>
+              <div class="vehicle-badge" *ngIf="vehicle.badge">
+                {{ vehicle.badge }}
+              </div>
+            </div>
+
+            <div class="vehicle-actions">
+              <button class="btn btn-sm like-btn" 
+                      [class.btn-danger]="vehicle.isLiked"
+                      [class.btn-outline-secondary]="!vehicle.isLiked" 
+                      (click)="onToggleLike(vehicle)"
+                      title="Toggle favorite" type="button">
+                <i [class]="vehicle.isLiked ? 'fas fa-heart' : 'far fa-heart'"></i>
+              </button>
+              <button class="btn btn-primary btn-sm" 
+                      (click)="onAddToCart(vehicle.id)"
+                      title="Add to cart" type="button">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparison data -->
+        <div class="comparison-data">
+          <div class="comparison-row" *ngFor="let field of getComparisonData()">
+            <div class="field-label">
+              {{ field.label }}
+            </div>
+            <div class="field-values">
+              <div class="field-value" 
+                   *ngFor="let vehicle of comparedVehicles; let i = index"
+                   [class.better-value]="getBetterValue(field, comparedVehicles[0], comparedVehicles[1]) === 'vehicle' + (i + 1)">
+                
+                <!-- Rating display -->
+                <div *ngIf="field.type === 'rating'" class="rating-display">
+                  <div class="stars">
+                    <i *ngFor="let star of getStarArray(vehicle.rating)" 
+                       [class]="star ? 'fas fa-star' : 'far fa-star'"></i>
+                  </div>
+                  <span class="rating-text">{{ vehicle.rating }}/5</span>
+                </div>
+                
+                <!-- Features list -->
+                <div *ngIf="field.type === 'list'" class="features-list">
+                  <span class="feature-tag" *ngFor="let feature of vehicle.features?.slice(0, 3)">
+                    {{ feature }}
+                  </span>
+                  <span class="more-features" *ngIf="vehicle.features && vehicle.features.length > 3">
+                    +{{ vehicle.features.length - 3 }} more
+                  </span>
+                </div>
+                
+                <!-- Regular text/currency values -->
+                <span *ngIf="field.type !== 'rating' && field.type !== 'list'">
+                  {{ formatValue(vehicle, field) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="comparison-footer" *ngIf="comparedVehicles.length > 0">
+      <div class="comparison-stats">
+        <span class="vehicles-count">{{ comparedVehicles.length }}/2 vehicles selected</span>
+      </div>
+      <div class="comparison-actions">
+        <button class="btn btn-outline-secondary" (click)="onClose()" type="button">
+          <i class="fas fa-times me-2"></i>Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

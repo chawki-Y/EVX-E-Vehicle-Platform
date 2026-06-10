@@ -1,0 +1,170 @@
+<div class="ev-website">
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-container">
+            <p class="loading-text">Loading course details...</p>
+        </div>
+        
+        <!-- Error State -->
+        <div *ngIf="error && !isLoading" class="error-container">
+            <p class="error-text">{{ error }}</p>
+            <button (click)="goBack()" class="back-button">Back to Resources</button>
+        </div>
+        
+        <!-- Course Detail Content -->
+        <div *ngIf="!isLoading && !error && course" class="course-detail">
+            <!-- Back Navigation -->
+            <div class="navigation">
+                <button (click)="goBack()" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Resources
+                </button>
+            </div>
+            
+            <!-- Course Header -->
+            <div class="course-header">
+                <div class="course-image" *ngIf="course.image">
+                    <img [src]="course.image" [alt]="course.title" loading="lazy">
+                </div>
+                
+                <div class="course-info">
+                    <div class="course-badges">
+                        <span class="course-level">{{ course.level }}</span>
+                        <span class="course-category">{{ course.category }}</span>
+                        <span *ngIf="course.isFeatured" class="featured-badge">Featured</span>
+                    </div>
+                    
+                    <h1 class="course-title">{{ course.title }}</h1>
+                    
+                    <p class="course-description" *ngIf="course.description">
+                        {{ course.description }}
+                    </p>
+                    
+                    <div class="course-meta">
+                        <div class="meta-item" *ngIf="course.instructor">
+                            <i class="fas fa-user"></i>
+                            <span>{{ course.instructor }}</span>
+                        </div>
+                        
+                        <div class="meta-item" *ngIf="course.duration">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ course.duration }}</span>
+                        </div>
+                        
+                        <div class="meta-item" *ngIf="course.location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ course.location }}</span>
+                        </div>
+                        
+                        <div class="meta-item" *ngIf="course.startDate">
+                            <i class="fas fa-calendar"></i>
+                            <span>{{ formatDate(course.startDate) }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Registration Card -->
+                <div class="registration-card">
+                    <div class="price">
+                        {{ formatPrice(course.price) }}
+                    </div>
+                    
+                    <div class="availability">
+                        <span class="status" [class]="getAvailabilityStatus().status">
+                            {{ getAvailabilityStatus().message }}
+                        </span>
+                        
+                        <div *ngIf="getSpotsRemaining() !== null" class="spots-remaining">
+                            {{ getSpotsRemaining() }} spots remaining
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="course.startDate" class="time-until-start">
+                        {{ getTimeUntilStart() }}
+                    </div>
+                    
+                    <div class="registration-actions">
+                        <button 
+                            class="register-button" 
+                            [disabled]="getAvailabilityStatus().status !== 'available'"
+                            (click)="onRegister()">
+                            <i class="fas fa-user-plus"></i>
+                            Register Now
+                        </button>
+                        
+                        <button 
+                            class="contact-button" 
+                            *ngIf="course.instructor"
+                            (click)="onContactInstructor()">
+                            <i class="fas fa-envelope"></i>
+                            Contact Instructor
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Course Content -->
+            <div class="course-content">
+                <!-- Syllabus Section -->
+                <div class="content-section" *ngIf="course.syllabus && course.syllabus.length > 0">
+                    <h2 class="section-title">Course Syllabus</h2>
+                    <div class="syllabus-list">
+                        <div *ngFor="let item of course.syllabus; let i = index" class="syllabus-item">
+                            <div class="item-number">{{ i + 1 }}</div>
+                            <div class="item-content">{{ item }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Prerequisites Section -->
+                <div class="content-section" *ngIf="course.prerequisites && course.prerequisites.length > 0">
+                    <h2 class="section-title">Prerequisites</h2>
+                    <div class="prerequisites-list">
+                        <div *ngFor="let prerequisite of course.prerequisites" class="prerequisite-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>{{ prerequisite }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Course Details Section -->
+                <div class="content-section">
+                    <h2 class="section-title">Course Details</h2>
+                    <div class="details-grid">
+                        <div class="detail-item" *ngIf="course.maxParticipants">
+                            <strong>Max Participants:</strong>
+                            <span>{{ course.maxParticipants }}</span>
+                        </div>
+                        
+                        <div class="detail-item" *ngIf="course.currentParticipants !== undefined">
+                            <strong>Current Participants:</strong>
+                            <span>{{ course.currentParticipants }}</span>
+                        </div>
+                        
+                        <div class="detail-item" *ngIf="course.registrationDeadline">
+                            <strong>Registration Deadline:</strong>
+                            <span>{{ formatDate(course.registrationDeadline) }}</span>
+                        </div>
+                        
+                        <div class="detail-item" *ngIf="course.endDate">
+                            <strong>End Date:</strong>
+                            <span>{{ formatDate(course.endDate) }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tags Section -->
+                <div class="content-section" *ngIf="course.tags && course.tags.length > 0">
+                    <h2 class="section-title">Tags</h2>
+                    <div class="tags-list">
+                        <span *ngFor="let tag of course.tags" class="tag">{{ tag }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>
