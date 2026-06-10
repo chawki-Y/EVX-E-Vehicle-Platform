@@ -722,6 +722,7 @@
     border: 2px dashed #4a9eff;
     border-radius: 6px;
     background: rgba(74, 158, 255, 0.05);
+    min-width: 0;
 }
 
 
@@ -765,7 +766,10 @@
 .input-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+    flex-wrap: nowrap;
 }
 
 .price-input,
@@ -774,8 +778,14 @@
     border: 1px solid #4a9eff;
     border-radius: 6px;
     color: #fff;
-    padding: 10px 6px;
-    flex: 1;
+    padding: 10px 8px;
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .price-input:focus,
@@ -787,8 +797,15 @@
 }
 
 .input-divider {
+    flex: 0 0 auto;
+    min-width: 34px;
+    justify-content: center;
+    border-radius: 6px;
+    padding: 10px 8px;
     color: #aaa;
     font-weight: 500;
+    font-size: 0.85rem;
+    line-height: 1.2;
 }
 
 /* Custom Slider Styles */
