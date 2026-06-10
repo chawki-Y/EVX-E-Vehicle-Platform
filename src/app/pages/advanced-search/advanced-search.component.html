@@ -161,12 +161,12 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="number" pInputText [(ngModel)]="priceMinValue" (input)="updatePrice()"
-                        class="form-control price-input" placeholder="Min" min="1" max="9000">
+                        class="form-control price-input" placeholder="Min" min="0" max="900">
                     <span class="input-group-text input-divider">to</span>
                     <input type="number" pInputText [(ngModel)]="priceMaxValue" (input)="updatePrice()"
-                        class="form-control price-input" placeholder="Max" min="1" max="9000">
+                        class="form-control price-input" placeholder="Max" min="0" max="900">
                 </div>
-                <p-slider [(ngModel)]="priceValues" [range]="true" [min]="1" [max]="9000"
+                <p-slider [(ngModel)]="priceValues" [range]="true" [min]="0" [max]="900"
                     (onSlideEnd)="onPriceSliderChange($event)" styleClass="custom-slider">
                 </p-slider>
             </div>
@@ -179,12 +179,12 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="number" pInputText [(ngModel)]="rangeMinValue" (input)="updateRange()"
-                        class="form-control range-input" placeholder="Min" min="0" max="900">
+                        class="form-control range-input" placeholder="Min" min="0" max="500">
                     <span class="input-group-text input-divider">to</span>
                     <input type="number" pInputText [(ngModel)]="rangeMaxValue" (input)="updateRange()"
-                        class="form-control range-input" placeholder="Max" min="0" max="900">
+                        class="form-control range-input" placeholder="Max" min="0" max="500">
                 </div>
-                <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0" [max]="450"
+                <p-slider [(ngModel)]="rangeValues" [range]="true" [min]="0" [max]="500"
                     (onSlideEnd)="onRangeSliderChange($event)" styleClass="custom-slider">
                 </p-slider>
             </div>

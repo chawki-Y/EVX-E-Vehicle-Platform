@@ -103,12 +103,12 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
   // Price Filter (changed to camelCase)
   priceMinValue: number = 0;
-  priceMaxValue: number = 900;
+  priceMaxValue: number = 100;
   priceValues: number[] = [this.priceMinValue, this.priceMaxValue];
 
   // Range Filter (changed to camelCase)
   rangeMinValue: number = 0;
-  rangeMaxValue: number = 900;
+  rangeMaxValue: number = 100;
   rangeValues: number[] = [this.rangeMinValue, this.rangeMaxValue];
 
   // Filter visibility for mobile
@@ -460,7 +460,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   // Filter methods
   updatePrice(): void {
     if (this.priceMinValue < 0) this.priceMinValue = 0;
-    if (this.priceMaxValue > 100) this.priceMaxValue = 100;
+    if (this.priceMaxValue > 900) this.priceMaxValue = 900;
     if (this.priceMinValue > this.priceMaxValue) this.priceMinValue = this.priceMaxValue;
 
     this.priceValues = [this.priceMinValue, this.priceMaxValue];
@@ -474,8 +474,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   }
 
   updateRange(): void {
-    if (this.rangeMinValue < 200) this.rangeMinValue = 200;
-    if (this.rangeMaxValue > 450) this.rangeMaxValue = 450;
+    if (this.rangeMinValue < 0) this.rangeMinValue = 0;
+    if (this.rangeMaxValue > 500) this.rangeMaxValue = 500;
     if (this.rangeMinValue > this.rangeMaxValue) this.rangeMinValue = this.rangeMaxValue;
 
     this.rangeValues = [this.rangeMinValue, this.rangeMaxValue];
@@ -653,9 +653,9 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     this.priceMinValue = 0;
     this.priceMaxValue = 100;
     this.priceValues = [0, 100];
-    this.rangeMinValue = 200;
-    this.rangeMaxValue = 450;
-    this.rangeValues = [200, 450];
+    this.rangeMinValue = 0;
+    this.rangeMaxValue = 100;
+    this.rangeValues = [0, 100];
     this.selectedConditions = [];
     this.selectedCategories = [];
     this.selectedBrands = [];
