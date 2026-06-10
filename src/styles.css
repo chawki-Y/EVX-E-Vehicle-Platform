@@ -131,3 +131,7 @@ router-outlet + * {
     display: none !important;
   }
 }
+html,
+body {
+  overflow-x: hidden;
+}

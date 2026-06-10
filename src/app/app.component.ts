@@ -14,24 +14,47 @@ import { RouteTransitionService } from './services/route-transition.service';
   standalone: true,
   imports: [CommonModule, RouterModule, HeaderComponent, ToolbarComponent, ChatButtonComponent, LoadingSpinnerComponent],  
   template: `
-    <app-header [f]="2"></app-header>  
+    <div class="app-shell" [class.chat-layout]="isChatRoute">
+      <app-header [f]="2"></app-header>  
 
-    <router-outlet></router-outlet>  <!-- This will render different pages based on routing -->
+      <main class="app-route">
+        <router-outlet></router-outlet>
+      </main>
 
-    <app-toolbar [shouldShow]="showToolbar"></app-toolbar>
-    <app-chat-button [shouldShow]="showChatButton"></app-chat-button>
+      <app-toolbar [shouldShow]="showToolbar"></app-toolbar>
+      <app-chat-button [shouldShow]="showChatButton"></app-chat-button>
+    </div>
     
     <!-- Loading spinner for route transitions -->
     <app-loading-spinner 
       [isVisible]="isLoading" 
       [loadingText]="loadingText">
     </app-loading-spinner>
-  `
+  `,
+  styles: [`
+    .app-shell.chat-layout {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .app-shell.chat-layout app-header {
+      flex: 0 0 auto;
+    }
+
+    .app-shell.chat-layout .app-route {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+  `]
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'evx-client';
   showToolbar = true;
   showChatButton = true;
+  isChatRoute = false;
   isLoading = false;
   loadingText = 'Loading...';
   
@@ -48,10 +71,13 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((event: any) => {
         const url = event.urlAfterRedirects;
+        const routePath = url.split('?')[0];
+        const isMessagesForumRoute = routePath.startsWith('/messages-forum');
+        this.isChatRoute = routePath === '/chat';
 
         // Customize this logic based on what routes should show/hide the toolbar
-        this.showToolbar = !['/messages-forum'].includes(url);
-        this.showChatButton = !['/messages-forum'].includes(url);
+        this.showToolbar = true;
+        this.showChatButton = !isMessagesForumRoute && !this.isChatRoute;
         
         // Update loading text based on route
         this.updateLoadingText(url);
@@ -81,7 +107,8 @@ export class AppComponent implements OnInit, OnDestroy {
       '/resources': 'Loading Resources...',
       '/cart': 'Loading Cart...',
       '/likes': 'Loading Favorites...',
-      '/messages-forum': 'Loading Forum...'
+      '/messages-forum': 'Loading Forum...',
+      '/chat': 'Loading Chat...'
     };
 
     // Check for dynamic routes

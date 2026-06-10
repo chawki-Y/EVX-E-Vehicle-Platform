@@ -9,6 +9,7 @@ import { MessagesForumComponent } from './pages/messages-forum/messages-forum.co
 import { LikesComponent } from './pages/likes/likes.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { ProductInfoComponent } from './pages/product-info/product-info.component';
+import { ChatComponent } from './pages/chat/chat.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'course/:id', component: CourseDetailComponent },
   { path: 'news/:slug', component: NewsArticleComponent },
   { path: 'news/:id', component: NewsArticleComponent },
+  { path: 'chat', component: ChatComponent },
   { path: 'messages-forum/:id', component: MessagesForumComponent },
   { path: 'likes', component: LikesComponent },
   { path: 'cart', component: CartComponent },

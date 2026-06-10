@@ -773,3 +773,296 @@ Page reload sent to client(s).
 [DEBUG] 2026-06-10T20:30:21.192Z: Navigation completed to: / undefined
 [DEBUG] 2026-06-10T20:30:21.764Z: Navigation started to: / undefined
 [DEBUG] 2026-06-10T20:30:21.880Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:33:30.415Z: Navigation started to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:33:30.532Z: Navigation completed to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:33:32.072Z: Navigation started to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:33:32.190Z: Navigation completed to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:33:32.637Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:33:32.742Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:39:15.957Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:39:16.062Z: Navigation completed to: / undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[35mBrowser bundles[39m    
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m       [2m | [22m[36m498.30 kB[39m[2m | [22m
+
+
+[35mServer bundles[39m     
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.server.mjs[39m    [2m | [22m[2mmain.server[22m[2m | [22m[36m500.43 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.612 seconds]
+
+Page reload sent to client(s).
+[DEBUG] 2026-06-10T20:42:56.151Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:56.265Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:56.277Z: Navigation started to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:42:56.387Z: Navigation completed to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:42:56.676Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:56.785Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:56.819Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:56.933Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:56.962Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.073Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:57.109Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.214Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:57.268Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.385Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:57.420Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.524Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:57.540Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.649Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:57.680Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.789Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:42:57.814Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:42:57.929Z: Navigation completed to: / undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+Application bundle generation failed. [0.308 seconds]
+
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[35mBrowser bundles[39m     
+[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mmain.js[39m             [2m | [22m[2mmain[22m            [2m | [22m[36m498.33 kB[39m[2m | [22m
+[32mscripts.js[39m          [2m | [22m[2mscripts[22m         [2m | [22m[36m176.36 kB[39m[2m | [22m
+[32mpolyfills.js[39m        [2m | [22m[2mpolyfills[22m       [2m | [22m [36m90.20 kB[39m[2m | [22m
+[32mstyles.css[39m          [2m | [22m[2mstyles[22m          [2m | [22m [36m11.44 kB[39m[2m | [22m
+
+[1m [22m                   [2m | [22m[1mInitial total[22m   [2m | [22m[1m776.32 kB[22m
+
+
+[35mServer bundles[39m      
+[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mpolyfills.server.mjs[39m[2m | [22m[2mpolyfills.server[22m[2m | [22m[36m572.91 kB[39m[2m | [22m
+[32mmain.server.mjs[39m     [2m | [22m[2mmain.server[22m     [2m | [22m[36m500.45 kB[39m[2m | [22m
+[32mserver.mjs[39m          [2m | [22m[2mserver[22m          [2m | [22m  [36m1.86 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.201 seconds]
+
+Page reload sent to client(s).
+[DEBUG] 2026-06-10T20:43:04.693Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:04.806Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:04.840Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:04.948Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:04.980Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.088Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.116Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.228Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.256Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.368Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.397Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.509Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.536Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.649Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.676Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.790Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.817Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:05.931Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:05.958Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:06.070Z: Navigation completed to: / undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[35mBrowser bundles[39m    
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m       [2m | [22m[36m498.38 kB[39m[2m | [22m
+
+
+[35mServer bundles[39m     
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.server.mjs[39m    [2m | [22m[2mmain.server[22m[2m | [22m[36m500.50 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.395 seconds]
+
+Page reload sent to client(s).
+[DEBUG] 2026-06-10T20:43:22.100Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:22.216Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:22.244Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:22.356Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:22.385Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:22.495Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:22.523Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:22.635Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:22.665Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:22.774Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:22.801Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:22.914Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:22.941Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:23.052Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:23.082Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:23.193Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:23.220Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:23.332Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:43:23.358Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:43:23.473Z: Navigation completed to: / undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[35mBrowser bundles[39m    
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m       [2m | [22m[36m498.34 kB[39m[2m | [22m
+
+
+[35mServer bundles[39m     
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.server.mjs[39m    [2m | [22m[2mmain.server[22m[2m | [22m[36m500.47 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.279 seconds]
+
+Page reload sent to client(s).
+[DEBUG] 2026-06-10T20:45:09.908Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.020Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.039Z: Navigation started to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:45:10.079Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.156Z: Navigation completed to: /advanced-search undefined
+[DEBUG] 2026-06-10T20:45:10.186Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.219Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.325Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.354Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.465Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.497Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.603Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.632Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.740Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.775Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:10.881Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:10.906Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:11.018Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:11.045Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:11.156Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:45:11.186Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:45:11.294Z: Navigation completed to: / undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.025 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.021 seconds]
+
+HMR update sent to client(s).
+[DEBUG] 2026-06-10T20:47:45.254Z: Navigation started to: /chat undefined
+[DEBUG] 2026-06-10T20:47:45.369Z: Navigation completed to: /chat undefined
+[DEBUG] 2026-06-10T20:47:45.398Z: Navigation started to: /chat undefined
+[DEBUG] 2026-06-10T20:47:45.507Z: Navigation completed to: /chat undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.024 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.019 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m [2m | [22m[1mRaw size[22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m[2m | [22m[36m11.48 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.033 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.018 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.018 seconds]
+
+HMR update sent to client(s).
+[DEBUG] 2026-06-10T20:52:27.193Z: Navigation started to: /chat undefined
+[DEBUG] 2026-06-10T20:52:27.303Z: Navigation completed to: /chat undefined
+[DEBUG] 2026-06-10T20:52:59.287Z: Navigation started to: /chat?ts=1781124779234 undefined
+[DEBUG] 2026-06-10T20:52:59.401Z: Navigation completed to: /chat?ts=1781124779234 undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[35mBrowser bundles[39m    
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m       [2m | [22m[36m499.05 kB[39m[2m | [22m
+
+
+[35mServer bundles[39m     
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m      [2m | [22m [1mRaw size[22m
+[32mmain.server.mjs[39m    [2m | [22m[2mmain.server[22m[2m | [22m[36m501.17 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.385 seconds]
+
+Page reload sent to client(s).
+[DEBUG] 2026-06-10T20:53:38.461Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:38.573Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:38.605Z: Navigation started to: /?ts=1781124779234 undefined
+[DEBUG] 2026-06-10T20:53:38.700Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:38.712Z: Navigation completed to: /?ts=1781124779234 undefined
+[DEBUG] 2026-06-10T20:53:38.767Z: Navigation started to: /?ts=1781124779234 undefined
+[DEBUG] 2026-06-10T20:53:38.806Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:38.885Z: Navigation completed to: /?ts=1781124779234 undefined
+[DEBUG] 2026-06-10T20:53:38.929Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.045Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.078Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.196Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.224Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.334Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.363Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.476Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.500Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.616Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.652Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.756Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.798Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:39.912Z: Navigation completed to: / undefined
+[DEBUG] 2026-06-10T20:53:39.941Z: Navigation started to: / undefined
+[DEBUG] 2026-06-10T20:53:40.053Z: Navigation completed to: / undefined
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.016 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.024 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.011 seconds]
+
+HMR update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+
+Component stylesheet(s) changed.
+
+Application bundle generation complete. [0.019 seconds]
+
+HMR update sent to client(s).

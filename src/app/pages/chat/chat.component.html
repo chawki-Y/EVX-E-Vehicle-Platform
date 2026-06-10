@@ -1,0 +1,73 @@
+<div class="chat-page">
+  <div class="chat-shell">
+    <aside class="chat-sidebar">
+      <div class="sidebar-header">
+        <h1>Messages</h1>
+        <p>Recent conversations</p>
+      </div>
+
+      <div class="search-wrap">
+        <input
+          type="text"
+          class="search-input"
+          [(ngModel)]="searchTerm"
+          placeholder="Search chats">
+      </div>
+
+      <div class="contact-list">
+        <button
+          type="button"
+          class="contact-item"
+          *ngFor="let contact of filteredContacts"
+          [class.active]="contact.id === selectedContactId"
+          (click)="selectContact(contact.id)">
+          <div class="avatar" [class.online]="contact.online">{{ contact.avatar }}</div>
+          <div class="contact-meta">
+            <div class="contact-top">
+              <h3>{{ contact.name }}</h3>
+              <span class="time">{{ contact.time }}</span>
+            </div>
+            <div class="contact-bottom">
+              <span class="role">{{ contact.role }}</span>
+              <span class="unread" *ngIf="contact.unread > 0">{{ contact.unread }}</span>
+            </div>
+            <p>{{ contact.lastMessage }}</p>
+          </div>
+        </button>
+      </div>
+    </aside>
+
+    <main class="chat-window">
+      <header class="chat-header">
+        <div class="chat-user">
+          <div class="avatar large" [class.online]="selectedContact.online">{{ selectedContact.avatar }}</div>
+          <div>
+            <h2>{{ selectedContact.name }}</h2>
+            <p>{{ selectedContact.role }} · {{ selectedContact.online ? 'online' : 'offline' }}</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="messages-area">
+        <div
+          class="message-row"
+          *ngFor="let message of selectedContact.messages"
+          [class.me]="message.sender === 'me'">
+          <div class="message-bubble">
+            <p>{{ message.text }}</p>
+            <span>{{ message.time }}</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="composer">
+        <input
+          type="text"
+          class="composer-input"
+          [(ngModel)]="messageText"
+          placeholder="Type a message">
+        <button type="button" class="send-btn" (click)="sendMessage()">Send</button>
+      </footer>
+    </main>
+  </div>
+</div>

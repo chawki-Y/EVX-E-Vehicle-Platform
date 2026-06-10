@@ -14,7 +14,7 @@ export class ChatButtonComponent {
 
   constructor(private router: Router) {}
 
-  navigateToMessagesForum() {
-      this.router.navigate(['/messages-forum'])
+  navigateToChat() {
+      this.router.navigate(['/chat'])
   }
 }
