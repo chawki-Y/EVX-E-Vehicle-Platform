@@ -764,12 +764,13 @@
 
 /* Input Groups */
 .input-group {
-    display: flex;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr);
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
+    max-width: 100%;
     min-width: 0;
-    flex-wrap: nowrap;
 }
 
 .price-input,
@@ -779,9 +780,8 @@
     border-radius: 6px;
     color: #fff;
     padding: 10px 8px;
-    flex: 1 1 0;
-    min-width: 0;
-    width: 100%;
+    min-width: 0 !important;
+    width: 100% !important;
     max-width: 100%;
     box-sizing: border-box;
     font-size: 0.9rem;
@@ -797,11 +797,14 @@
 }
 
 .input-divider {
-    flex: 0 0 auto;
-    min-width: 34px;
+    width: 38px;
+    min-width: 38px;
+    height: 42px;
     justify-content: center;
     border-radius: 6px;
-    padding: 10px 8px;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
     color: #aaa;
     font-weight: 500;
     font-size: 0.85rem;
@@ -1686,6 +1689,17 @@
     border-radius: 8px 0 0 8px;
 }
 
+.filter-section .input-divider {
+    width: 38px;
+    min-width: 38px;
+    height: 42px;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .search-container .input-group-text {
     background-color: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2219,5 +2233,16 @@
     .comparison-btn {
         padding: 12px 20px;
         font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .input-group {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .input-divider {
+        width: 100%;
+        min-width: 0;
     }
 }
