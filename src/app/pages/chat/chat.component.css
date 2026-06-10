@@ -49,6 +49,10 @@
   height: 100%;
 }
 
+.chat-header {
+  background-color:rgba(74, 158, 255, 0.08);
+}
+
 .sidebar-header,
 .chat-header,
 .composer {
