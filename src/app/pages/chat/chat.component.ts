@@ -32,6 +32,7 @@ export class ChatComponent {
   searchTerm = '';
   messageText = '';
   selectedContactId = 1;
+  isConversationOpen = false;
 
   contacts: ChatContact[] = [
     {
@@ -98,6 +99,11 @@ export class ChatComponent {
 
   selectContact(contactId: number): void {
     this.selectedContactId = contactId;
+    this.isConversationOpen = true;
+  }
+
+  closeConversation(): void {
+    this.isConversationOpen = false;
   }
 
   sendMessage(): void {

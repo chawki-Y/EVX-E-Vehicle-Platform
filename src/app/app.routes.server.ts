@@ -26,6 +26,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender
   },
   {
+    path: 'chat',
+    renderMode: RenderMode.Prerender
+  },
+  {
     path: 'course/:id',
     renderMode: RenderMode.Server
   },

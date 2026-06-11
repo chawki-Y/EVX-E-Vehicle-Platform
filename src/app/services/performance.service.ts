@@ -2,6 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from './logger.service';
+import { environment } from '../../environments/environment';
 
 interface PerformanceMetric {
   name: string;
@@ -126,15 +127,30 @@ export class PerformanceService {
 
   // Register service worker for caching
   private registerServiceWorker(): void {
-    if (isPlatformBrowser(this.platformId) && 'serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+    if (!isPlatformBrowser(this.platformId) || !('serviceWorker' in navigator)) {
+      return;
+    }
+
+    if (!environment.production) {
+      navigator.serviceWorker.getRegistrations()
+        .then(registrations => Promise.all(registrations.map(registration => registration.unregister())))
+        .then(() => caches.keys())
+        .then(cacheNames => Promise.all(
+          cacheNames
+            .filter(cacheName => cacheName.startsWith('evx-web-'))
+            .map(cacheName => caches.delete(cacheName))
+        ))
+        .catch(error => this.logger.warn('Failed to clear development service worker cache:', error));
+      return;
+    }
+
+    navigator.serviceWorker.register('/sw.js')
         .then((registration) => {
           this.logger.info('Service Worker registered successfully');
         })
         .catch((error) => {
           this.logger.error('Service Worker registration failed:', error);
         });
-    }
   }
 
   // Measure Core Web Vitals

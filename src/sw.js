@@ -1,9 +1,6 @@
-const CACHE_NAME = 'evx-web-v1';
+const CACHE_NAME = 'evx-web-v2';
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/assets/default-car.jpg',
   '/assets/EVX logo2.png'
 ];
 
@@ -19,6 +16,19 @@ self.addEventListener('install', (event) => {
 
 // Fetch event - serve from cache when offline
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(event.request))
+        .then((response) => response || caches.match('/'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -31,8 +41,7 @@ self.addEventListener('fetch', (event) => {
         const fetchRequest = event.request.clone();
         
         return fetch(fetchRequest).then((response) => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
+          if (!response || !response.ok || response.type !== 'basic') {
             return response;
           }
           
@@ -66,6 +75,6 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });

@@ -1,5 +1,5 @@
 <div class="chat-page">
-  <div class="chat-shell">
+  <div class="chat-shell" [class.conversation-open]="isConversationOpen">
     <aside class="chat-sidebar">
       <div class="sidebar-header">
         <h1>Messages</h1>
@@ -39,11 +39,19 @@
 
     <main class="chat-window">
       <header class="chat-header">
+        <button
+          type="button"
+          class="back-button"
+          aria-label="Back to conversations"
+          (click)="closeConversation()">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+
         <div class="chat-user">
           <div class="avatar large" [class.online]="selectedContact.online">{{ selectedContact.avatar }}</div>
-          <div>
+          <div class="chat-user-details">
             <h2>{{ selectedContact.name }}</h2>
-            <p>{{ selectedContact.role }} · {{ selectedContact.online ? 'online' : 'offline' }}</p>
+            <p>{{ selectedContact.role }} - {{ selectedContact.online ? 'online' : 'offline' }}</p>
           </div>
         </div>
       </header>
@@ -65,6 +73,7 @@
           type="text"
           class="composer-input"
           [(ngModel)]="messageText"
+          (keyup.enter)="sendMessage()"
           placeholder="Type a message">
         <button type="button" class="send-btn" (click)="sendMessage()">Send</button>
       </footer>
