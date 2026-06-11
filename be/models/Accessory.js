@@ -17,11 +17,19 @@ const Accessory = sequelize.define('Accessory', {
   },
   price: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: false
+    allowNull: false,
+    get() {
+      const value = this.getDataValue('price');
+      return value === null ? null : Number(value);
+    }
   },
   originalPrice: {
     type: DataTypes.DECIMAL(10, 2),
-    allowNull: true
+    allowNull: true,
+    get() {
+      const value = this.getDataValue('originalPrice');
+      return value === null ? null : Number(value);
+    }
   },
   image: {
     type: DataTypes.TEXT,
@@ -39,7 +47,11 @@ const Accessory = sequelize.define('Accessory', {
   },
   rating: {
     type: DataTypes.DECIMAL(2, 1),
-    allowNull: false
+    allowNull: false,
+    get() {
+      const value = this.getDataValue('rating');
+      return value === null ? null : Number(value);
+    }
   },
   reviews: {
     type: DataTypes.INTEGER,

@@ -4434,3 +4434,12 @@ Thumbs.db
 /be/node_modules/axios/lib/adapters/xhr.js
 /be/node_modules/combined-stream/yarn.lock
 /be/node_modules/axios/lib/helpers/ZlibHeaderTransformStream.js
+be/.env
+be/node_modules/
+node_modules/
+.angular/
+dist/
+angular-dev.log
+angular-dev.err.log
+ngrok.log
+ngrok.err.log

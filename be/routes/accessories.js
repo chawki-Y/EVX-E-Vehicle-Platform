@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { Accessory } = require('../models');
 const { Op } = require('sequelize');
+const { addItemLikeStatus } = require('../src/services/item-like-status');
+const { parsePagination } = require('../src/utils/pagination');
 
 // Helper function to build Sequelize where clause from filters
 function buildWhereClause(filters) {
@@ -103,33 +105,31 @@ router.get('/', async (req, res) => {
       search: search || undefined,
       dealers: dealers ? dealers.split(',') : undefined
     };
+    const paginationInput = parsePagination(page, limit);
 
     // Build query options
     const queryOptions = {
       where: buildWhereClause(filters),
       order: buildOrderClause(sortBy),
-      limit: parseInt(limit),
-      offset: (parseInt(page) - 1) * parseInt(limit)
+      limit: paginationInput.limit,
+      offset: paginationInput.offset
     };
 
     // Execute query
     const { count, rows: accessories } = await Accessory.findAndCountAll(queryOptions);
 
     // Add isLiked property (accessories don't have likes yet, but keeping consistent structure)
-    const accessoriesWithLikes = accessories.map(accessory => ({
-      ...accessory.toJSON(),
-      isLiked: false // TODO: Implement accessory likes if needed
-    }));
+    const accessoriesWithLikes = await addItemLikeStatus(accessories, userId, 'accessory');
 
     // Build pagination info
-    const totalPages = Math.ceil(count / parseInt(limit));
+    const totalPages = Math.ceil(count / paginationInput.limit);
     const pagination = {
-      currentPage: parseInt(page),
+      currentPage: paginationInput.page,
       totalPages,
       totalItems: count,
-      itemsPerPage: parseInt(limit),
-      hasNextPage: parseInt(page) < totalPages,
-      hasPrevPage: parseInt(page) > 1
+      itemsPerPage: paginationInput.limit,
+      hasNextPage: paginationInput.page < totalPages,
+      hasPrevPage: paginationInput.page > 1
     };
 
     res.json({
@@ -144,7 +144,8 @@ router.get('/', async (req, res) => {
           dealers: await getAvailableDealers(),
           priceRange: await getPriceRange()
         }
-      }
+      },
+      sortBy
     });
 
   } catch (error) {
@@ -160,6 +161,7 @@ router.get('/', async (req, res) => {
 // GET /api/accessories/featured - Get featured accessories
 router.get('/featured', async (req, res) => {
   try {
+    const { userId } = req.query;
     const featuredAccessories = await Accessory.findAll({
       where: {
         badge: {
@@ -170,10 +172,7 @@ router.get('/featured', async (req, res) => {
       limit: 6
     });
 
-    const accessoriesWithLikes = featuredAccessories.map(accessory => ({
-      ...accessory.toJSON(),
-      isLiked: false
-    }));
+    const accessoriesWithLikes = await addItemLikeStatus(featuredAccessories, userId, 'accessory');
 
     res.json({
       success: true,
@@ -298,10 +297,7 @@ router.get('/:id', async (req, res) => {
       });
     }
 
-    const accessoryWithLikes = {
-      ...accessory.toJSON(),
-      isLiked: false // TODO: Implement accessory likes if needed
-    };
+    const [accessoryWithLikes] = await addItemLikeStatus([accessory], userId, 'accessory');
 
     res.json({
       success: true,

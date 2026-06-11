@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { Vehicle, UserVehicleLike } = require('../models');
+const { Vehicle } = require('../models');
 const { Op } = require('sequelize');
+const { addItemLikeStatus } = require('../src/services/item-like-status');
+const { parsePagination } = require('../src/utils/pagination');
 
 // Helper function to build Sequelize where clause from filters
 function buildWhereClause(filters) {
@@ -75,28 +77,7 @@ function buildWhereClause(filters) {
 
 // Helper function to add like status to vehicles
 async function addLikeStatus(vehicles, userId) {
-  if (!userId || !vehicles.length) {
-    return vehicles.map(vehicle => ({
-      ...vehicle.toJSON(),
-      isLiked: false
-    }));
-  }
-
-  const vehicleIds = vehicles.map(v => v.id);
-  const likes = await UserVehicleLike.findAll({
-    where: {
-      userId,
-      vehicleId: vehicleIds
-    },
-    attributes: ['vehicleId']
-  });
-
-  const likedVehicleIds = new Set(likes.map(like => like.vehicleId));
-
-  return vehicles.map(vehicle => ({
-    ...vehicle.toJSON(),
-    isLiked: likedVehicleIds.has(vehicle.id)
-  }));
+  return addItemLikeStatus(vehicles, userId, 'vehicle');
 }
 
 // Helper function to build Sequelize order clause
@@ -173,13 +154,14 @@ router.get('/', async (req, res) => {
       dealers: dealers ? dealers.split(',') : undefined,
       isElectric: isElectric !== undefined ? isElectric === 'true' : undefined
     };
+    const paginationInput = parsePagination(page, limit);
 
     // Build query options
     const queryOptions = {
       where: buildWhereClause(filters),
       order: buildOrderClause(sortBy),
-      limit: parseInt(limit),
-      offset: (parseInt(page) - 1) * parseInt(limit)
+      limit: paginationInput.limit,
+      offset: paginationInput.offset
     };
 
     // Execute query
@@ -189,14 +171,14 @@ router.get('/', async (req, res) => {
     const vehiclesWithLikes = await addLikeStatus(vehicles, userId);
 
     // Build pagination info
-    const totalPages = Math.ceil(count / parseInt(limit));
+    const totalPages = Math.ceil(count / paginationInput.limit);
     const pagination = {
-      currentPage: parseInt(page),
+      currentPage: paginationInput.page,
       totalPages,
       totalItems: count,
-      itemsPerPage: parseInt(limit),
-      hasNextPage: parseInt(page) < totalPages,
-      hasPrevPage: parseInt(page) > 1
+      itemsPerPage: paginationInput.limit,
+      hasNextPage: paginationInput.page < totalPages,
+      hasPrevPage: paginationInput.page > 1
     };
 
     res.json({

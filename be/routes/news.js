@@ -3,6 +3,7 @@ const { News } = require('../models');
 const { Op } = require('sequelize');
 
 const router = express.Router();
+const SORT_FIELDS = new Set(['publishedAt', 'title', 'category', 'viewCount', 'createdAt']);
 
 // Get all news articles
 router.get('/', async (req, res) => {
@@ -19,7 +20,11 @@ router.get('/', async (req, res) => {
       exclude
     } = req.query;
 
-    const offset = (page - 1) * limit;
+    const safePage = Math.max(1, parseInt(page, 10) || 1);
+    const safeLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 10));
+    const safeSortBy = SORT_FIELDS.has(sortBy) ? sortBy : 'publishedAt';
+    const safeSortOrder = String(sortOrder).toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+    const offset = (safePage - 1) * safeLimit;
     const whereClause = {};
 
     // Filter by published status
@@ -53,9 +58,9 @@ router.get('/', async (req, res) => {
 
     const news = await News.findAndCountAll({
       where: whereClause,
-      order: [[sortBy, sortOrder.toUpperCase()]],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      order: [[safeSortBy, safeSortOrder]],
+      limit: safeLimit,
+      offset,
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       }
@@ -65,10 +70,10 @@ router.get('/', async (req, res) => {
       success: true,
       data: news.rows,
       pagination: {
-        currentPage: parseInt(page),
-        totalPages: Math.ceil(news.count / limit),
+        currentPage: safePage,
+        totalPages: Math.ceil(news.count / safeLimit),
         totalItems: news.count,
-        itemsPerPage: parseInt(limit)
+        itemsPerPage: safeLimit
       }
     });
   } catch (error) {

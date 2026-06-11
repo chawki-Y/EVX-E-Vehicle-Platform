@@ -1,13 +1,25 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+function databaseValue(name, developmentDefault) {
+  const value = process.env[name];
+  if (value) {
+    return value;
+  }
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(`${name} must be configured in production`);
+  }
+  return developmentDefault;
+}
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'evx_db',
-  username: process.env.DB_USER || 'evx_user',
-  password: process.env.DB_PASSWORD || 'evx_password',
+  host: databaseValue('DB_HOST', 'localhost'),
+  port: Number(databaseValue('DB_PORT', 5432)),
+  database: databaseValue('DB_NAME', 'evx_db'),
+  username: databaseValue('DB_USER', 'evx_user'),
+  password: databaseValue('DB_PASSWORD', 'evx_password'),
   logging: process.env.NODE_ENV === 'development' ? console.log : false,
   pool: {
     max: 5,

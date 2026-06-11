@@ -208,7 +208,13 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     const sortBy = this.getSortByValue();
 
     // Call the service to get items
-    this.vehicleService.getItems(filters, sortBy, this.currentPage, this.itemsPerPage, 1)
+    this.vehicleService.getItems(
+      filters,
+      sortBy,
+      this.currentPage,
+      this.itemsPerPage,
+      this.likesService.getUserId()
+    )
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: ItemResponse) => {

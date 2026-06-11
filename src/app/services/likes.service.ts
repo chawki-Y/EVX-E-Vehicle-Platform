@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { UserContextService } from './user-context.service';
 
 interface LikedItem {
   id: string | number;
@@ -50,12 +51,14 @@ export class LikesService {
   private likedItems: LikedItem[] = [];
   private likesSubject = new BehaviorSubject<LikedItem[]>([]);
   public likes$ = this.likesSubject.asObservable();
-  private currentUserId: number = 1; // Default user ID, should be set from auth service
+  private currentUserId: number;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private http: HttpClient
+    private http: HttpClient,
+    private userContext: UserContextService
   ) {
+    this.currentUserId = this.userContext.getUserId();
     this.loadLikesFromStorage();
     // Only sync with backend in browser environment - do this asynchronously to prevent blocking
     if (isPlatformBrowser(this.platformId)) {
@@ -70,6 +73,10 @@ export class LikesService {
   setUserId(userId: number): void {
     this.currentUserId = userId;
     this.syncWithBackend();
+  }
+
+  getUserId(): number {
+    return this.currentUserId;
   }
 
   /**
@@ -93,12 +100,15 @@ export class LikesService {
 
   private loadLikesFromStorage(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const savedLikes = localStorage.getItem('likes');
+      const storageKey = this.getStorageKey();
+      const savedLikes = localStorage.getItem(storageKey) || localStorage.getItem('likes');
       if (savedLikes) {
         this.likedItems = JSON.parse(savedLikes).map((item: any) => ({
           ...item,
           dateAdded: new Date(item.dateAdded)
         }));
+        localStorage.setItem(storageKey, JSON.stringify(this.likedItems));
+        localStorage.removeItem('likes');
         this.likesSubject.next(this.likedItems);
       }
     }
@@ -106,9 +116,13 @@ export class LikesService {
 
   private saveLikesToStorage(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('likes', JSON.stringify(this.likedItems));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(this.likedItems));
     }
     this.likesSubject.next(this.likedItems);
+  }
+
+  private getStorageKey(): string {
+    return `likes:${this.currentUserId}`;
   }
 
   /**

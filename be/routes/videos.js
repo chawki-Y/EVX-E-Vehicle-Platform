@@ -3,6 +3,7 @@ const { Video } = require('../models');
 const { Op } = require('sequelize');
 
 const router = express.Router();
+const SORT_FIELDS = new Set(['sortOrder', 'publishedAt', 'title', 'viewCount', 'createdAt']);
 
 // Get all videos
 router.get('/', async (req, res) => {
@@ -18,7 +19,11 @@ router.get('/', async (req, res) => {
       sortOrder = 'ASC'
     } = req.query;
 
-    const offset = (page - 1) * limit;
+    const safePage = Math.max(1, parseInt(page, 10) || 1);
+    const safeLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 10));
+    const safeSortBy = SORT_FIELDS.has(sortBy) ? sortBy : 'sortOrder';
+    const safeSortOrder = String(sortOrder).toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const offset = (safePage - 1) * safeLimit;
     const whereClause = {};
 
     // Filter by published status
@@ -46,17 +51,17 @@ router.get('/', async (req, res) => {
 
     // Determine sort order
     let orderClause;
-    if (sortBy === 'sortOrder') {
+    if (safeSortBy === 'sortOrder') {
       orderClause = [['sortOrder', 'ASC'], ['publishedAt', 'DESC']];
     } else {
-      orderClause = [[sortBy, sortOrder.toUpperCase()]];
+      orderClause = [[safeSortBy, safeSortOrder]];
     }
 
     const videos = await Video.findAndCountAll({
       where: whereClause,
       order: orderClause,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: safeLimit,
+      offset,
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       }
@@ -66,10 +71,10 @@ router.get('/', async (req, res) => {
       success: true,
       data: videos.rows,
       pagination: {
-        currentPage: parseInt(page),
-        totalPages: Math.ceil(videos.count / limit),
+        currentPage: safePage,
+        totalPages: Math.ceil(videos.count / safeLimit),
         totalItems: videos.count,
-        itemsPerPage: parseInt(limit)
+        itemsPerPage: safeLimit
       }
     });
   } catch (error) {

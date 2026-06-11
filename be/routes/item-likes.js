@@ -1,185 +1,187 @@
 const express = require('express');
-const { Vehicle, Accessory, User, UserItemLike } = require('../models');
+const { Op } = require('sequelize');
+const { Vehicle, Accessory, User, UserItemLike, sequelize } = require('../models');
+
 const router = express.Router();
+const ITEM_TYPES = new Set(['vehicle', 'accessory']);
 
-// Get user's liked items (both vehicles and accessories)
-router.get('/user/:userId', async (req, res) => {
+function positiveInteger(value, fallback) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function validUserId(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+}
+
+async function findItem(itemType, itemId, transaction) {
+  const model = itemType === 'vehicle' ? Vehicle : Accessory;
+  return model.findByPk(itemId, { transaction });
+}
+
+router.get('/user/:userId', async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const { page = 1, limit = 10, type } = req.query;
-    const offset = (page - 1) * limit;
+    const userId = validUserId(req.params.userId);
+    if (!userId) {
+      return res.status(400).json({ success: false, error: 'A valid userId is required' });
+    }
 
-    // Check if user exists
+    const page = positiveInteger(req.query.page, 1);
+    const limit = Math.min(positiveInteger(req.query.limit, 10), 100);
+    const type = req.query.type;
+    if (type && !ITEM_TYPES.has(type)) {
+      return res.status(400).json({ success: false, error: 'Invalid item type' });
+    }
+
     const user = await User.findByPk(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.json({
+        items: [],
+        pagination: { page, limit, total: 0, pages: 0 }
+      });
     }
 
-    // Build where clause
-    const whereClause = { userId };
-    if (type && ['vehicle', 'accessory'].includes(type)) {
-      whereClause.itemType = type;
+    const where = { userId };
+    if (type) {
+      where.itemType = type;
     }
 
-    // Get liked items with pagination
-    const likedItems = await UserItemLike.findAll({
-      where: whereClause,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+    const { count, rows: likes } = await UserItemLike.findAndCountAll({
+      where,
+      limit,
+      offset: (page - 1) * limit,
       order: [['likedAt', 'DESC']]
     });
 
-    const totalLikes = await UserItemLike.count({ where: whereClause });
+    const items = (await Promise.all(likes.map(async like => {
+      const item = await findItem(like.itemType, like.itemId);
+      return item
+        ? { ...item.toJSON(), type: like.itemType, likedAt: like.likedAt }
+        : null;
+    }))).filter(Boolean);
 
-    // Fetch actual item data
-    const items = [];
-    for (const like of likedItems) {
-      let item = null;
-      if (like.itemType === 'vehicle') {
-        // Convert to number for vehicle lookup
-        item = await Vehicle.findByPk(parseInt(like.itemId));
-      } else if (like.itemType === 'accessory') {
-        // Keep as string for accessory lookup
-        item = await Accessory.findByPk(like.itemId);
-      }
-      
-      if (item) {
-        items.push({
-          ...item.toJSON(),
-          type: like.itemType,
-          likedAt: like.likedAt
-        });
-      }
-    }
-
-    res.json({
+    return res.json({
       items,
       pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        total: totalLikes,
-        pages: Math.ceil(totalLikes / limit)
+        page,
+        limit,
+        total: count,
+        pages: Math.ceil(count / limit)
       }
     });
   } catch (error) {
-    console.error('Error fetching liked items:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return next(error);
   }
 });
 
-// Toggle like for an item (vehicle or accessory)
-router.post('/toggle', async (req, res) => {
+router.post('/toggle', async (req, res, next) => {
+  const userId = validUserId(req.body.userId);
+  const { itemId, itemType } = req.body;
+
+  if (!userId || itemId === undefined || itemId === null || !ITEM_TYPES.has(itemType)) {
+    return res.status(400).json({
+      success: false,
+      error: 'Valid userId, itemId, and itemType are required'
+    });
+  }
+
+  let transaction;
   try {
-    const { userId, itemId, itemType } = req.body;
-
-    if (!userId || !itemId || !itemType) {
-      return res.status(400).json({ error: 'userId, itemId, and itemType are required' });
-    }
-
-    if (!['vehicle', 'accessory'].includes(itemType)) {
-      return res.status(400).json({ error: 'itemType must be either "vehicle" or "accessory"' });
-    }
-
-    // Check if user exists (create if not exists for simplicity)
-    let user = await User.findByPk(userId);
-    if (!user) {
-      user = await User.create({ id: userId });
-    }
-
-    // Check if item exists
-    let item = null;
-    if (itemType === 'vehicle') {
-      // Convert to number for vehicle lookup
-      item = await Vehicle.findByPk(parseInt(itemId));
-    } else if (itemType === 'accessory') {
-      // Keep as string for accessory lookup
-      item = await Accessory.findByPk(itemId.toString());
-    }
-
+    transaction = await sequelize.transaction();
+    const item = await findItem(itemType, itemId, transaction);
     if (!item) {
-      return res.status(404).json({ error: `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} not found` });
+      await transaction.rollback();
+      return res.status(404).json({ success: false, error: `${itemType} not found` });
     }
 
-    // Check if like already exists
-    const existingLike = await UserItemLike.findOne({
-      where: { userId, itemId: itemId.toString(), itemType }
+    await User.findOrCreate({
+      where: { id: userId },
+      defaults: { id: userId },
+      transaction
     });
 
+    const where = { userId, itemId: String(itemId), itemType };
+    const existingLike = await UserItemLike.findOne({ where, transaction, lock: transaction.LOCK.UPDATE });
+
     if (existingLike) {
-      // Unlike - remove the like
-      await existingLike.destroy();
-      res.json({ success: true, isLiked: false, message: `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} unliked successfully` });
-    } else {
-      // Like - create new like
-      await UserItemLike.create({ userId, itemId: itemId.toString(), itemType });
-      res.json({ success: true, isLiked: true, message: `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} liked successfully` });
+      await existingLike.destroy({ transaction });
+      await transaction.commit();
+      return res.json({ success: true, isLiked: false, message: `${itemType} unliked successfully` });
     }
+
+    await UserItemLike.create(where, { transaction });
+    await transaction.commit();
+    return res.json({ success: true, isLiked: true, message: `${itemType} liked successfully` });
   } catch (error) {
-    console.error('Error toggling like:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (transaction && !transaction.finished) {
+      await transaction.rollback();
+    }
+    return next(error);
   }
 });
 
-// Check if user likes a specific item
-router.get('/check/:userId/:itemType/:itemId', async (req, res) => {
+router.get('/check/:userId/:itemType/:itemId', async (req, res, next) => {
   try {
-    const { userId, itemType, itemId } = req.params;
-
-    if (!['vehicle', 'accessory'].includes(itemType)) {
-      return res.status(400).json({ error: 'itemType must be either "vehicle" or "accessory"' });
+    const userId = validUserId(req.params.userId);
+    const { itemType, itemId } = req.params;
+    if (!userId || !ITEM_TYPES.has(itemType)) {
+      return res.status(400).json({ success: false, error: 'Invalid user or item type' });
     }
 
     const like = await UserItemLike.findOne({
-      where: { userId, itemId: itemId.toString(), itemType }
+      where: { userId, itemId: String(itemId), itemType }
     });
-
-    res.json({ isLiked: !!like });
+    return res.json({ isLiked: Boolean(like) });
   } catch (error) {
-    console.error('Error checking like status:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return next(error);
   }
 });
 
-// Get like status for multiple items for a user
-router.post('/check-multiple', async (req, res) => {
+router.post('/check-multiple', async (req, res, next) => {
   try {
-    const { userId, items } = req.body;
-
-    if (!userId || !Array.isArray(items)) {
-      return res.status(400).json({ error: 'userId and items array are required' });
+    const userId = validUserId(req.body.userId);
+    const items = req.body.items;
+    if (!userId || !Array.isArray(items) || items.length > 100) {
+      return res.status(400).json({ success: false, error: 'Valid userId and up to 100 items are required' });
     }
 
-    // Validate items format: [{ id: string|number, type: 'vehicle'|'accessory' }]
-    for (const item of items) {
-      if (!item.id || !item.type || !['vehicle', 'accessory'].includes(item.type)) {
-        return res.status(400).json({ error: 'Each item must have id and type (vehicle or accessory)' });
-      }
+    const validItems = items.every(item =>
+      item &&
+      item.id !== undefined &&
+      item.id !== null &&
+      ITEM_TYPES.has(item.type)
+    );
+    if (!validItems) {
+      return res.status(400).json({ success: false, error: 'Each item requires a valid id and type' });
+    }
+
+    if (items.length === 0) {
+      return res.json({});
     }
 
     const likes = await UserItemLike.findAll({
       where: {
         userId,
-        [require('sequelize').Op.or]: items.map(item => ({
-          itemId: item.id.toString(),
+        [Op.or]: items.map(item => ({
+          itemId: String(item.id),
           itemType: item.type
         }))
       },
       attributes: ['itemId', 'itemType']
     });
+    const likedKeys = new Set(likes.map(like => `${like.itemType}_${like.itemId}`));
 
-    const likeStatus = {};
-    
-    items.forEach(item => {
-      const key = `${item.type}_${item.id}`;
-      likeStatus[key] = likes.some(like => 
-        like.itemId === item.id.toString() && like.itemType === item.type
-      );
-    });
+    const status = Object.fromEntries(
+      items.map(item => {
+        const key = `${item.type}_${item.id}`;
+        return [key, likedKeys.has(key)];
+      })
+    );
 
-    res.json(likeStatus);
+    return res.json(status);
   } catch (error) {
-    console.error('Error checking multiple like statuses:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return next(error);
   }
 });
 

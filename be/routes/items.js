@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { Vehicle, Accessory } = require('../models');
 const { Op } = require('sequelize');
+const { addItemLikeStatus } = require('../src/services/item-like-status');
+const { parsePagination } = require('../src/utils/pagination');
 
 // Helper function to build Sequelize where clause from filters for vehicles
 function buildVehicleWhereClause(filters) {
@@ -162,7 +164,7 @@ router.get('/', async (req, res) => {
       userId,
 
       // Type filter
-      types = '', // Default to both
+      types = 'vehicles,accessories',
 
       // Filters
       priceMin,
@@ -197,6 +199,7 @@ router.get('/', async (req, res) => {
       dealers: dealers ? dealers.split(',') : undefined,
       isElectric: isElectric !== undefined ? isElectric === 'true' : undefined
     };
+    const paginationInput = parsePagination(page, limit);
 
     const selectedTypes = types.split(',');
     let allItems = [];
@@ -214,10 +217,10 @@ router.get('/', async (req, res) => {
         where: vehicleWhere
       });
 
-      const vehiclesWithType = vehicles.map(vehicle => ({
-        ...vehicle.toJSON(),
+      const vehiclesWithLikes = await addItemLikeStatus(vehicles, userId, 'vehicle');
+      const vehiclesWithType = vehiclesWithLikes.map(vehicle => ({
+        ...vehicle,
         type: 'vehicle',
-        isLiked: false // TODO: Implement likes
       }));
 
       allItems = allItems.concat(vehiclesWithType);
@@ -231,10 +234,10 @@ router.get('/', async (req, res) => {
         where: accessoryWhere
       });
 
-      const accessoriesWithType = accessories.map(accessory => ({
-        ...accessory.toJSON(),
+      const accessoriesWithLikes = await addItemLikeStatus(accessories, userId, 'accessory');
+      const accessoriesWithType = accessoriesWithLikes.map(accessory => ({
+        ...accessory,
         type: 'accessory',
-        isLiked: false // TODO: Implement likes
       }));
 
       allItems = allItems.concat(accessoriesWithType);
@@ -245,19 +248,19 @@ router.get('/', async (req, res) => {
 
     // Apply pagination
     const totalItems = sortedItems.length;
-    const totalPages = Math.ceil(totalItems / parseInt(limit));
-    const startIndex = (parseInt(page) - 1) * parseInt(limit);
-    const endIndex = startIndex + parseInt(limit);
+    const totalPages = Math.ceil(totalItems / paginationInput.limit);
+    const startIndex = paginationInput.offset;
+    const endIndex = startIndex + paginationInput.limit;
     const paginatedItems = sortedItems.slice(startIndex, endIndex);
 
     // Build pagination info
     const pagination = {
-      currentPage: parseInt(page),
+      currentPage: paginationInput.page,
       totalPages,
       totalItems,
-      itemsPerPage: parseInt(limit),
-      hasNextPage: parseInt(page) < totalPages,
-      hasPrevPage: parseInt(page) > 1
+      itemsPerPage: paginationInput.limit,
+      hasNextPage: paginationInput.page < totalPages,
+      hasPrevPage: paginationInput.page > 1
     };
 
     // Get available filter options
@@ -270,7 +273,8 @@ router.get('/', async (req, res) => {
       filters: {
         applied: filters,
         available: availableFilters
-      }
+      },
+      sortBy
     });
 
   } catch (error) {

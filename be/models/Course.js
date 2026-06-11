@@ -43,7 +43,11 @@ const Course = sequelize.define('Course', {
   price: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: true,
-    comment: 'Course price, null for free courses'
+    comment: 'Course price, null for free courses',
+    get() {
+      const value = this.getDataValue('price');
+      return value === null ? null : Number(value);
+    }
   },
   instructor: {
     type: DataTypes.STRING,
