@@ -50,7 +50,8 @@ ordered name.
 npm run db:seed
 ```
 
-Additional content seeders remain in `scripts/`.
+This command loads catalog, article, video, and course fixtures. It is intended
+for development and is blocked in production.
 
 ## Production
 

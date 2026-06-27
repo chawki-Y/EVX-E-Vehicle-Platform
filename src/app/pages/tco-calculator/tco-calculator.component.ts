@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { VehicleService, Vehicle } from '../../services/vehicle.service';
-import { Subject, takeUntil } from 'rxjs';
 
 interface TCOCalculation {
   vehiclePrice: number;
@@ -44,12 +42,6 @@ interface ComparisonVehicle {
   styleUrl: './tco-calculator.component.css'
 })
 export class TcoCalculatorComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-  
-  // Hero vehicles for slideshow
-  heroVehicles: Vehicle[] = [];
-  currentSlide: number = 0;
-  
   // Calculator inputs for EV
   evPrice: number = 45000;
   evDownPayment: number = 9000;
@@ -126,7 +118,6 @@ export class TcoCalculatorComponent implements OnInit, OnDestroy {
   milesRange: number[] = [5000, 25000];
   
   constructor(
-    private vehicleService: VehicleService,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -137,18 +128,12 @@ export class TcoCalculatorComponent implements OnInit, OnDestroy {
     
     // Only load data in browser environment to prevent SSR issues
     if (isPlatformBrowser(this.platformId)) {
-      this.loadHeroVehicles();
-      this.startHeroCarousel();
-      
       // Listen for window resize
       window.addEventListener('resize', this.onWindowResize);
     }
   }
   
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    
     // Clean up window resize listener (only in browser)
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('resize', this.onWindowResize);
@@ -164,39 +149,6 @@ export class TcoCalculatorComponent implements OnInit, OnDestroy {
       this.isMobile = window.innerWidth <= 768;
       this.cdr.detectChanges();
     }
-  }
-  
-  private loadHeroVehicles(): void {
-    this.vehicleService.getVehicles({}, 'name_asc', 1, 5).subscribe({
-      next: (response) => {
-        if (response && response.data) {
-          this.heroVehicles = response.data.slice(0, 5);
-          this.startHeroCarousel();
-        }
-      },
-      error: (error) => {
-        console.error('Error loading hero vehicles:', error);
-      }
-    });
-  }
-  
-  startHeroCarousel(): void {
-    setInterval(() => this.nextSlide(), 5000);
-  }
-  
-  nextSlide(): void {
-    this.currentSlide = (this.currentSlide + 1) % this.heroVehicles.length;
-  }
-  
-  prevSlide(): void {
-    this.currentSlide = this.currentSlide === 0 ? this.heroVehicles.length - 1 : this.currentSlide - 1;
-  }
-  
-  getCurrentHeroVehicle(): Vehicle | undefined {
-    if (this.heroVehicles.length > 0) {
-      return this.heroVehicles[this.currentSlide];
-    }
-    return undefined;
   }
   
   calculateTCO(): void {

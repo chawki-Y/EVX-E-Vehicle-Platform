@@ -31,8 +31,6 @@ interface SortOption {
 })
 export class AdvancedSearchComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
-  currentSlide: number = 0;
-  heroVehicles: Vehicle[] = [];
   private destroy$ = new Subject<void>();
   private searchSubject = new Subject<string>();
 
@@ -108,7 +106,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
 
   // Range Filter (changed to camelCase)
   rangeMinValue: number = 0;
-  rangeMaxValue: number = 100;
+  rangeMaxValue: number = 500;
   rangeValues: number[] = [this.rangeMinValue, this.rangeMaxValue];
 
   // Filter visibility for mobile
@@ -145,6 +143,7 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     this.vehicles = [];
     this.accessories = [];
     this.checkMobileScreen();
+    this.isFiltersVisible = !this.isMobile;
     this.updateItemsPerPage();
     this.initializeSearchDebounce();
     
@@ -153,8 +152,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
       // Load data first, then update filters
       this.loadDataAndFilters();
       
-      this.loadHeroVehicles();
-      this.startHeroCarousel();
       this.subscribeToLikesChanges();
 
       // Listen for window resize to update mobile detection
@@ -247,21 +244,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
   }
 
   // Removed loadVehiclesFromMock method - now using actual data from service
-
-  private loadHeroVehicles(): void {
-    this.vehicleService.getHeroVehicles()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (heroVehicles: Vehicle[]) => {
-          this.heroVehicles = heroVehicles;
-          this.updateLikeStatuses();
-        },
-        error: (error) => {
-          console.error('Error loading hero vehicles:', error);
-          this.heroVehicles = [];
-        }
-      });
-  }
 
   private loadDataAndFilters(): void {
     // Load filter options and dealers separately
@@ -414,9 +396,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     this.vehicles.forEach(vehicle => {
       vehicle.isLiked = this.likesService.isLiked(vehicle.id, 'vehicle');
     });
-    this.heroVehicles.forEach(vehicle => {
-      vehicle.isLiked = this.likesService.isLiked(vehicle.id, 'vehicle');
-    });
     this.filteredVehicles.forEach(vehicle => {
       vehicle.isLiked = this.likesService.isLiked(vehicle.id, 'vehicle');
     });
@@ -439,28 +418,6 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
       'Name Asc': 'name_asc'
     };
     return sortMap[this.selectedSortOption] || 'rating_desc';
-  }
-
-  // Hero Carousel
-  startHeroCarousel(): void {
-    setInterval(() => {
-      this.nextSlide();
-    }, 5000);
-  }
-
-  nextSlide(): void {
-    this.currentSlide = (this.currentSlide + 1) % this.heroVehicles.length;
-  }
-
-  prevSlide(): void {
-    this.currentSlide = this.currentSlide > 0 ? this.currentSlide - 1 : this.heroVehicles.length - 1;
-  }
-
-  getCurrentHeroVehicle(): Vehicle | undefined {
-    if (this.heroVehicles.length === 0 || this.currentSlide < 0 || this.currentSlide >= this.heroVehicles.length) {
-      return undefined;
-    }
-    return this.heroVehicles[this.currentSlide];
   }
 
   // Filter methods
@@ -660,8 +617,8 @@ export class AdvancedSearchComponent implements OnInit, OnDestroy {
     this.priceMaxValue = 100;
     this.priceValues = [0, 100];
     this.rangeMinValue = 0;
-    this.rangeMaxValue = 100;
-    this.rangeValues = [0, 100];
+    this.rangeMaxValue = 500;
+    this.rangeValues = [0, 500];
     this.selectedConditions = [];
     this.selectedCategories = [];
     this.selectedBrands = [];

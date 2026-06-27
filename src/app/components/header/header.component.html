@@ -1,23 +1,25 @@
-<header>
-    <img src="assets/EVX logo2.png" class="logo" alt="EVX Logo" (click)="navigateToHomePage()" 
+<header class="site-header">
+    <button type="button" class="brand-button" aria-label="Go to EVX home" (click)="navigateToHomePage()">
+    <img src="assets/EVX logo2.png" class="logo" alt="EVX"
      appOptimizeImage 
      [optimizeWidth]="200" 
      [optimizeQuality]="90" 
      [lazyLoad]="false">
+    </button>
     <nav>
       <ng-container *ngIf="f === 2; else createAccount">
-        <button class="icon-btn" (click)="navigateToLikes()" title="My Likes">
+        <button type="button" class="icon-btn" (click)="navigateToLikes()" title="Saved vehicles" aria-label="Saved vehicles">
           <i class="fas fa-heart"></i>
           <span class="badge" *ngIf="likesCount > 0">{{ likesCount }}</span>
         </button>
-        <button class="icon-btn" (click)="navigateToCart()" title="Shopping Cart">
+        <button type="button" class="icon-btn" (click)="navigateToCart()" title="Shopping cart" aria-label="Shopping cart">
           <i class="fas fa-shopping-cart"></i>
           <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
         </button>
-        <button class="icon-btn"><i class="fas fa-user"></i></button>
+        <button type="button" class="icon-btn" title="Account" aria-label="Account"><i class="fas fa-user"></i></button>
       </ng-container>
       <ng-template #createAccount>
-        <button class="icon-btn create-account">Create Account</button>
+        <button type="button" class="icon-btn create-account">Create Account</button>
       </ng-template>
     </nav>
   </header>

@@ -1,62 +1,56 @@
-const { Vehicle, Accessory, User, testConnection } = require('../models');
-const { vehicles } = require('../data/vehicles');
+const {
+  Accessory,
+  User,
+  UserItemLike,
+  Vehicle,
+  sequelize,
+  testConnection
+} = require('../models');
 const { accessories } = require('../data/accessories');
+const { vehicles } = require('../data/vehicles');
 
-const seed = async () => {
-  console.log('🌱 Starting database seeding...');
-  
-  try {
-    // Test connection first
-    await testConnection();
-    
-    // Clear existing data
-    await Vehicle.destroy({ where: {} });
-    await Accessory.destroy({ where: {} });
-    await User.destroy({ where: {} });
-    console.log('🗑️  Cleared existing data');
-    
-    // Create default user
+async function seedCatalog() {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Catalog seeding is disabled in production.');
+  }
+
+  await testConnection();
+
+  await sequelize.transaction(async transaction => {
+    await UserItemLike.destroy({ where: {}, transaction });
+    await Vehicle.destroy({ where: {}, transaction });
+    await Accessory.destroy({ where: {}, transaction });
+    await User.destroy({ where: {}, transaction });
+
     await User.create({
       id: 1,
-      name: 'Default User',
-      email: 'user@example.com'
-    });
-    console.log('👤 Created default user with ID 1');
-    
-    // Clean vehicle data (remove isLiked field)
-    const cleanVehicles = vehicles.map(vehicle => {
-      const { isLiked, ...cleanVehicle } = vehicle;
-      return cleanVehicle;
-    });
-    
-    // Insert vehicle data
-    await Vehicle.bulkCreate(cleanVehicles, {
-      validate: true,
-      ignoreDuplicates: false
-    });
-    
-    // Clean accessory data (remove isLiked field)
-    const cleanAccessories = accessories.map(accessory => {
-      const { isLiked, ...cleanAccessory } = accessory;
-      return cleanAccessory;
-    });
-    
-    // Insert accessory data
-    await Accessory.bulkCreate(cleanAccessories, {
-      validate: true,
-      ignoreDuplicates: false
-    });
-    
-    const vehicleCount = await Vehicle.count();
-    const accessoryCount = await Accessory.count();
-    const userCount = await User.count();
-    console.log(`✅ Successfully seeded ${vehicleCount} vehicles, ${accessoryCount} accessories, and ${userCount} user into the database!`);
-    
-    process.exit(0);
-  } catch (error) {
-    console.error('❌ Seeding failed:', error);
-    process.exit(1);
-  }
-};
+      name: 'EVX Guest User',
+      email: 'guest@evx.local'
+    }, { transaction });
 
-seed();
+    const cleanVehicles = vehicles.map(({ isLiked, ...vehicle }) => vehicle);
+    const cleanAccessories = accessories.map(({ isLiked, ...accessory }) => accessory);
+
+    await Vehicle.bulkCreate(cleanVehicles, { validate: true, transaction });
+    await Accessory.bulkCreate(cleanAccessories, { validate: true, transaction });
+  });
+
+  const [vehicleCount, accessoryCount] = await Promise.all([
+    Vehicle.count(),
+    Accessory.count()
+  ]);
+
+  console.log(`Seeded ${vehicleCount} vehicles, ${accessoryCount} accessories, and 1 guest user.`);
+}
+
+if (require.main === module) {
+  seedCatalog()
+    .then(() => sequelize.close())
+    .catch(async error => {
+      console.error('Catalog seeding failed:', error);
+      await sequelize.close();
+      process.exitCode = 1;
+    });
+}
+
+module.exports = seedCatalog;

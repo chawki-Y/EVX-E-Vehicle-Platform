@@ -2,134 +2,67 @@ const { News, sequelize } = require('../models');
 
 const sampleNews = [
   {
-    title: 'Tesla Sold More Cybertrucks Than Almost All Other EV Trucks Combined',
-    content: 'Tesla\'s Cybertruck has achieved remarkable sales figures in its first quarter, outselling nearly all other electric truck models combined. The futuristic design and impressive performance specifications have captured consumer attention, making it one of the most successful EV truck launches in recent history. Industry analysts attribute this success to Tesla\'s brand recognition, innovative features, and competitive pricing strategy.',
-    excerpt: 'Tesla\'s Cybertruck has achieved remarkable sales figures in its first quarter, outselling nearly all other electric truck models combined.',
-    image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&h=400&fit=crop',
-    author: 'EVX News Team',
-    category: 'Tesla',
-    tags: ['Tesla', 'Cybertruck', 'Electric Trucks', 'Sales'],
-    publishedAt: new Date('2024-01-15'),
+    title: 'How to Read an Electric Vehicle Range Estimate',
+    content: 'Published range figures are useful comparison points, but real-world results vary with speed, temperature, elevation, tire pressure, and cabin heating or cooling. Use the official estimate as a baseline, then leave a practical buffer when planning longer journeys. EVX keeps range alongside battery and charging information so shoppers can compare the full ownership context.',
+    excerpt: 'A practical guide to official range figures and the conditions that affect real-world driving distance.',
+    image: 'assets/vehicles/hyundai-ioniq-6.jpg',
+    author: 'EVX Editorial',
+    category: 'Ownership',
+    tags: ['range', 'efficiency', 'planning'],
+    publishedAt: new Date('2026-01-18'),
     isPublished: true,
     isFeatured: true,
-    slug: 'tesla-cybertruck-sales-record',
-    metaDescription: 'Tesla Cybertruck breaks sales records in electric truck market'
+    slug: 'understanding-ev-range-estimates',
+    metaDescription: 'Understand electric vehicle range estimates and the factors that affect real-world range.'
   },
   {
-    title: 'The Electric Car Revolution is on Track, Says IEA',
-    content: 'The International Energy Agency (IEA) has released its latest report confirming that the global electric vehicle revolution is proceeding as expected. The report highlights significant growth in EV adoption worldwide, with sales increasing by 35% year-over-year. Key factors driving this growth include improved battery technology, expanding charging infrastructure, and supportive government policies. The IEA projects that EVs will represent 30% of all vehicle sales by 2030.',
-    excerpt: 'The International Energy Agency confirms that the global electric vehicle revolution is proceeding as expected with 35% growth.',
-    image: 'https://images.unsplash.com/photo-1593941707882-a5bac6861d75?w=800&h=400&fit=crop',
-    author: 'Sarah Johnson',
-    category: 'Industry',
-    tags: ['IEA', 'Electric Vehicles', 'Market Growth', 'Global Trends'],
-    publishedAt: new Date('2024-01-12'),
+    title: 'Home and Public EV Charging Explained',
+    content: 'Most owners handle routine charging at home with Level 2 equipment and use DC fast charging during longer trips. Charging speed depends on both the station and the vehicle. A car cannot accept more power than its onboard limits allow, so peak charger output is only one part of the comparison.',
+    excerpt: 'The differences between home charging, public Level 2 stations, and DC fast charging.',
+    image: 'assets/vehicles/tesla-model-3.jpg',
+    author: 'EVX Editorial',
+    category: 'Charging',
+    tags: ['charging', 'home charging', 'fast charging'],
+    publishedAt: new Date('2026-01-12'),
     isPublished: true,
     isFeatured: true,
-    slug: 'iea-electric-car-revolution-on-track',
-    metaDescription: 'IEA report confirms electric vehicle revolution is on track with strong global growth'
+    slug: 'home-public-ev-charging-explained',
+    metaDescription: 'Compare common home and public electric vehicle charging options.'
   },
   {
-    title: 'BMW is a Surprise Winner in Electric Vehicles',
-    content: 'BMW has emerged as an unexpected leader in the electric vehicle market, with their iX and i4 models gaining significant market share. The German automaker\'s strategic approach to electrification, combining luxury with performance, has resonated well with consumers. BMW\'s investment in solid-state battery technology and their commitment to carbon-neutral production by 2030 has positioned them as a serious competitor to Tesla and other EV manufacturers.',
-    excerpt: 'BMW has emerged as an unexpected leader in the electric vehicle market with their iX and i4 models gaining significant market share.',
-    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=400&fit=crop',
-    author: 'Michael Chen',
-    category: 'BMW',
-    tags: ['BMW', 'Electric Vehicles', 'iX', 'i4', 'Market Share'],
-    publishedAt: new Date('2024-01-10'),
+    title: 'What Changes the Total Cost of EV Ownership?',
+    content: 'Purchase price is only the starting point. Energy rates, annual mileage, insurance, financing, depreciation, maintenance, and available incentives can all change the result. The EVX ownership calculator keeps those assumptions visible so users can model scenarios rather than rely on a single headline number.',
+    excerpt: 'The assumptions that matter when comparing purchase price with long-term ownership cost.',
+    image: 'assets/vehicles/renault-scenic.jpg',
+    author: 'EVX Editorial',
+    category: 'Cost planning',
+    tags: ['TCO', 'cost', 'planning'],
+    publishedAt: new Date('2026-01-05'),
     isPublished: true,
     isFeatured: false,
-    slug: 'bmw-surprise-winner-electric-vehicles',
-    metaDescription: 'BMW emerges as surprise winner in electric vehicle market with iX and i4 success'
-  },
-  {
-    title: 'New Fast-Charging Technology Reduces EV Charging Time to 5 Minutes',
-    content: 'A breakthrough in fast-charging technology promises to revolutionize electric vehicle adoption by reducing charging times to just 5 minutes for 80% battery capacity. The new technology, developed by a consortium of tech companies, uses advanced cooling systems and optimized battery chemistry to achieve unprecedented charging speeds without compromising battery life. This development could eliminate one of the main barriers to EV adoption - charging anxiety.',
-    excerpt: 'Breakthrough fast-charging technology reduces EV charging time to just 5 minutes for 80% battery capacity.',
-    image: 'https://images.unsplash.com/photo-1593941707874-ef2edc59c3c9?w=800&h=400&fit=crop',
-    author: 'Dr. Emily Rodriguez',
-    category: 'Technology',
-    tags: ['Fast Charging', 'Battery Technology', 'Innovation', 'EV Infrastructure'],
-    publishedAt: new Date('2024-01-08'),
-    isPublished: true,
-    isFeatured: true,
-    slug: 'fast-charging-technology-5-minutes',
-    metaDescription: 'Revolutionary fast-charging technology reduces EV charging time to 5 minutes'
-  },
-  {
-    title: 'Ford F-150 Lightning Wins Truck of the Year Award',
-    content: 'The Ford F-150 Lightning has been awarded the prestigious Truck of the Year award, marking a significant milestone for electric pickup trucks. The Lightning impressed judges with its impressive towing capacity, innovative features like vehicle-to-home power capability, and competitive pricing. This recognition validates Ford\'s strategy of electrifying their most popular vehicle and demonstrates the growing acceptance of electric trucks in the mainstream market.',
-    excerpt: 'Ford F-150 Lightning wins prestigious Truck of the Year award, marking milestone for electric pickup trucks.',
-    image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&h=400&fit=crop',
-    author: 'James Wilson',
-    category: 'Ford',
-    tags: ['Ford', 'F-150 Lightning', 'Electric Trucks', 'Awards'],
-    publishedAt: new Date('2024-01-05'),
-    isPublished: true,
-    isFeatured: false,
-    slug: 'ford-f150-lightning-truck-year-award',
-    metaDescription: 'Ford F-150 Lightning wins Truck of the Year award for electric pickup innovation'
-  },
-  {
-    title: 'European Union Announces €50 Billion Investment in EV Infrastructure',
-    content: 'The European Union has announced a massive €50 billion investment plan to accelerate the deployment of electric vehicle charging infrastructure across member states. The plan aims to install 3 million public charging points by 2030, ensuring that no driver is more than 60km away from a fast-charging station. This ambitious initiative is part of the EU\'s broader Green Deal strategy to achieve carbon neutrality by 2050.',
-    excerpt: 'EU announces €50 billion investment to install 3 million public charging points by 2030.',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop',
-    author: 'Anna Kowalski',
-    category: 'Policy',
-    tags: ['European Union', 'EV Infrastructure', 'Investment', 'Green Deal'],
-    publishedAt: new Date('2024-01-03'),
-    isPublished: true,
-    isFeatured: false,
-    slug: 'eu-50-billion-ev-infrastructure-investment',
-    metaDescription: 'European Union announces €50 billion investment in EV charging infrastructure'
+    slug: 'ev-total-cost-of-ownership-factors',
+    metaDescription: 'Learn which assumptions affect electric vehicle total cost of ownership.'
   }
 ];
 
-const seedNews = async () => {
-  try {
-    // Connect to database
-    await sequelize.authenticate();
-    console.log('✅ Database connection established.');
-
-    // Sync the News model
-    await News.sync({ force: false });
-    console.log('✅ News table synchronized.');
-
-    // Check if news already exist
-    const existingNews = await News.count();
-    if (existingNews > 0) {
-      console.log(`ℹ️  Found ${existingNews} existing news articles. Skipping seed.`);
-      return;
-    }
-
-    // Insert sample news
-    await News.bulkCreate(sampleNews);
-    console.log(`✅ Successfully seeded ${sampleNews.length} news articles.`);
-
-    // Display seeded news
-    const seededNews = await News.findAll({
-      attributes: ['id', 'title', 'category', 'publishedAt'],
-      order: [['publishedAt', 'DESC']]
-    });
-
-    console.log('\n📰 Seeded News Articles:');
-    seededNews.forEach(news => {
-      console.log(`   ${news.id}. ${news.title} (${news.category})`);
-    });
-
-  } catch (error) {
-    console.error('❌ Error seeding news:', error);
-  } finally {
-    await sequelize.close();
-    console.log('\n🔌 Database connection closed.');
+async function seedNews() {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('News seeding is disabled in production.');
   }
-};
 
-// Run the seed function if this file is executed directly
+  await News.destroy({ where: {} });
+  await News.bulkCreate(sampleNews, { validate: true });
+  console.log(`Seeded ${sampleNews.length} educational articles.`);
+}
+
 if (require.main === module) {
-  seedNews();
+  seedNews()
+    .then(() => sequelize.close())
+    .catch(async error => {
+      console.error('News seeding failed:', error);
+      await sequelize.close();
+      process.exitCode = 1;
+    });
 }
 
 module.exports = seedNews;

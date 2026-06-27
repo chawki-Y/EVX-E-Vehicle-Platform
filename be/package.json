@@ -1,14 +1,15 @@
 {
   "name": "evx-backend",
   "version": "1.0.0",
-  "description": "Backend API for EVX Web Application",
-  "main": "server.js",
+  "description": "Express and PostgreSQL API for the EVX E-Vehicle Platform",
+  "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "node --test tests/*.test.js",
     "db:migrate": "node src/database/migrate.js",
-    "db:seed": "node scripts/seed.js",
+    "db:seed": "npm run db:seed:catalog && node scripts/seed-news.js && node scripts/seed-videos.js && node scripts/seed-courses.js",
+    "db:seed:catalog": "node scripts/seed.js",
     "db:test": "node test-database.js"
   },
   "keywords": [
@@ -17,7 +18,7 @@
     "api",
     "express"
   ],
-  "author": "EVX Team",
+  "author": "EVX contributors",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",

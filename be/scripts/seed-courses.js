@@ -1,11 +1,11 @@
-const { Course } = require('../models');
+const { Course, sequelize, testConnection } = require('../models');
 
 const sampleCourses = [
   {
     title: 'Battery Health Workshop',
     description: 'Learn everything about EV battery maintenance, health monitoring, and optimization techniques. This comprehensive workshop covers battery chemistry, charging best practices, thermal management, and troubleshooting common issues.',
     shortDescription: 'Master EV battery maintenance and optimization techniques in this hands-on workshop.',
-    image: 'https://images.unsplash.com/photo-1593941707882-a5bac6861d75?w=800&h=600&fit=crop',
+    image: 'assets/vehicles/renault-scenic.jpg',
     category: 'Workshop',
     level: 'Intermediate',
     duration: '2 days',
@@ -14,9 +14,9 @@ const sampleCourses = [
     location: 'Online',
     maxParticipants: 25,
     currentParticipants: 12,
-    startDate: new Date('2024-02-15'),
-    endDate: new Date('2024-02-16'),
-    registrationDeadline: new Date('2024-02-10'),
+    startDate: new Date('2026-09-15'),
+    endDate: new Date('2026-09-16'),
+    registrationDeadline: new Date('2026-09-10'),
     syllabus: [
       'Battery Chemistry Fundamentals',
       'Charging Optimization',
@@ -39,7 +39,7 @@ const sampleCourses = [
     title: 'EV for Beginners',
     description: 'A comprehensive introduction to electric vehicles for newcomers. This course covers EV basics, types of electric vehicles, charging infrastructure, cost analysis, and environmental benefits.',
     shortDescription: 'Perfect introduction to electric vehicles for complete beginners.',
-    image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&h=600&fit=crop',
+    image: 'assets/vehicles/hyundai-ioniq-6.jpg',
     category: 'Course',
     level: 'Beginner',
     duration: '4 hours',
@@ -48,9 +48,9 @@ const sampleCourses = [
     location: 'Online',
     maxParticipants: 50,
     currentParticipants: 28,
-    startDate: new Date('2024-02-20'),
-    endDate: new Date('2024-02-20'),
-    registrationDeadline: new Date('2024-02-18'),
+    startDate: new Date('2026-09-22'),
+    endDate: new Date('2026-09-22'),
+    registrationDeadline: new Date('2026-09-18'),
     syllabus: [
       'What are Electric Vehicles?',
       'Types of EVs (BEV, PHEV, HEV)',
@@ -70,7 +70,7 @@ const sampleCourses = [
     title: 'Advanced EV Diagnostics',
     description: 'Professional-level course for technicians and engineers working with electric vehicles. Learn advanced diagnostic techniques, software tools, and troubleshooting methodologies.',
     shortDescription: 'Professional diagnostic techniques for EV technicians and engineers.',
-    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop',
+    image: 'assets/vehicles/porsche-taycan.jpg',
     category: 'Professional',
     level: 'Advanced',
     duration: '3 days',
@@ -79,9 +79,9 @@ const sampleCourses = [
     location: 'San Francisco, CA',
     maxParticipants: 15,
     currentParticipants: 8,
-    startDate: new Date('2024-03-05'),
-    endDate: new Date('2024-03-07'),
-    registrationDeadline: new Date('2024-02-28'),
+    startDate: new Date('2026-10-06'),
+    endDate: new Date('2026-10-08'),
+    registrationDeadline: new Date('2026-09-28'),
     syllabus: [
       'Advanced Diagnostic Tools',
       'CAN Bus Analysis',
@@ -106,7 +106,7 @@ const sampleCourses = [
     title: 'Home Charging Installation',
     description: 'Learn how to safely install and maintain home EV charging stations. This practical workshop covers electrical requirements, safety protocols, and installation best practices.',
     shortDescription: 'Hands-on workshop for home EV charging station installation.',
-    image: 'https://images.unsplash.com/photo-1593941707874-ef2edc59c3dc?w=800&h=600&fit=crop',
+    image: 'assets/vehicles/tesla-model-3.jpg',
     category: 'Workshop',
     level: 'Intermediate',
     duration: '1 day',
@@ -115,9 +115,9 @@ const sampleCourses = [
     location: 'Multiple Cities',
     maxParticipants: 20,
     currentParticipants: 15,
-    startDate: new Date('2024-02-25'),
-    endDate: new Date('2024-02-25'),
-    registrationDeadline: new Date('2024-02-22'),
+    startDate: new Date('2026-10-17'),
+    endDate: new Date('2026-10-17'),
+    registrationDeadline: new Date('2026-10-12'),
     syllabus: [
       'Electrical Requirements Assessment',
       'Safety Protocols and Codes',
@@ -139,6 +139,10 @@ const sampleCourses = [
 ];
 
 const seedCourses = async () => {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('Course seeding is disabled in production.');
+  }
+
   try {
     console.log('🌱 Starting to seed courses...');
     
@@ -165,20 +169,14 @@ const seedCourses = async () => {
 
 // Run if called directly
 if (require.main === module) {
-  const { testConnection } = require('../models');
-  
-  const runSeed = async () => {
-    try {
-      await testConnection();
-      await seedCourses();
-      process.exit(0);
-    } catch (error) {
-      console.error('Failed to seed courses:', error);
-      process.exit(1);
-    }
-  };
-  
-  runSeed();
+  testConnection()
+    .then(() => seedCourses())
+    .then(() => sequelize.close())
+    .catch(async error => {
+      console.error('Course seeding failed:', error);
+      await sequelize.close();
+      process.exitCode = 1;
+    });
 }
 
 module.exports = seedCourses;

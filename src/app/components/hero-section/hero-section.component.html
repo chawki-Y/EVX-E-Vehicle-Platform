@@ -1,29 +1,43 @@
-<div class="hero-section">
-  <app-search-bar></app-search-bar>
-
-  <button class="nav-arrow left" (click)="previousSlide()">
-    <i class="fas fa-chevron-left"></i>
-  </button>
-
-  <div class="hero-content">
-    <div class="carousel">
-      <div 
-        *ngFor="let img of images; let i = index" 
-        class="hero-slide" 
-        [ngStyle]="{ 'background-image': 'url(' + img + ')' }"
-        [class.active]="currentSlide === i">
-      </div>
-    </div>
-
-    <div class="carousel-dots">
-      <span *ngFor="let dot of images; let i = index" 
-            [class.active]="currentSlide === i"
-            (click)="setSlide(i)">
-      </span>
+<section class="hero-section" aria-labelledby="hero-title">
+  <div class="carousel" aria-hidden="true">
+    <div
+      *ngFor="let slide of slides; let i = index"
+      class="hero-slide"
+      [class.active]="currentSlide === i"
+      [style.background-image]="'url(' + slide.image + ')'">
     </div>
   </div>
 
-  <button class="nav-arrow right" (click)="nextSlide()">
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <p class="eyebrow">EV discovery and ownership planning</p>
+    <h1 id="hero-title">Find the electric vehicle that fits your life</h1>
+    <p class="hero-copy">Compare practical range, pricing, charging time, and ownership costs in one focused platform.</p>
+
+    <app-search-bar></app-search-bar>
+
+    <div class="hero-actions">
+      <a class="primary-action" routerLink="/advanced-search">Browse inventory</a>
+      <a class="secondary-action" routerLink="/tco-calculator">Calculate ownership cost</a>
+    </div>
+  </div>
+
+  <button type="button" class="nav-arrow left" (click)="showPrevious()" aria-label="Previous vehicle photo">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  <button type="button" class="nav-arrow right" (click)="showNext()" aria-label="Next vehicle photo">
     <i class="fas fa-chevron-right"></i>
   </button>
-</div>
+
+  <div class="carousel-dots" aria-label="Vehicle photos">
+    <button
+      type="button"
+      *ngFor="let slide of slides; let i = index"
+      [class.active]="currentSlide === i"
+      (click)="selectSlide(i)"
+      [attr.aria-label]="'Show ' + slide.label"
+      [attr.aria-pressed]="currentSlide === i">
+    </button>
+  </div>
+</section>

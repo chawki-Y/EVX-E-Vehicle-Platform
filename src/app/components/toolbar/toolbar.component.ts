@@ -22,8 +22,8 @@ export class ToolbarComponent {
     this.router.navigate(['/advanced-search']);
   }
 
-  navigateToProductDetails() {
-    this.router.navigate(['/vehicle']);
+  navigateHome() {
+    this.router.navigate(['/']);
   }
 
   navigateToTcoCalculator() {

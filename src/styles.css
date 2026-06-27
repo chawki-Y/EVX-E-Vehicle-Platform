@@ -24,11 +24,6 @@ body {
   line-height: 1.6;
 }
 
-/* Smooth transitions for all elements to reduce visual jumps */
-* {
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
-}
-
 /* Prevent layout shifts during navigation */
 app-root {
   display: block;
@@ -37,9 +32,7 @@ app-root {
 
 /* Global loading state for route transitions */
 .route-loading {
-  opacity: 0.7;
   pointer-events: none;
-  transition: opacity 0.3s ease;
 }
 
 /* Enhanced loading states */
@@ -133,5 +126,7 @@ router-outlet + * {
 }
 html,
 body {
+  width: 100%;
+  min-width: 0;
   overflow-x: hidden;
 }

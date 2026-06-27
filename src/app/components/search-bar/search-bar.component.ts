@@ -13,27 +13,24 @@ import { Router } from '@angular/router';
 export class SearchBarComponent {
   searchQuery: string = '';
   
-  // Reordered suggestions for better visual flow
-  searchSuggestions: string[] = [
-    'Tesla Model S',
+  readonly searchSuggestions: string[] = [
+    'Tesla Model 3',
     'BMW iX', 
     'Porsche Taycan',
-    'Ford Mustang Mach-E',
-    'Hyundai IONIQ 5',
+    'Renault Scenic',
+    'Hyundai IONIQ 6',
     'Kia EV6',
-    'Long Range EVs',
-    'Fast Charging'
   ];
 
   constructor(private router: Router) {}
 
-  performSearch() {
+  performSearch(): void {
     if (this.searchQuery.trim()) {
       this.router.navigate(['/advanced-search'], { queryParams: { q: this.searchQuery } });
     }
   }
   
-  selectSuggestion(suggestion: string) {
+  selectSuggestion(suggestion: string): void {
     this.searchQuery = suggestion;
     this.performSearch();
   }

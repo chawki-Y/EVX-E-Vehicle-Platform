@@ -1,154 +1,29 @@
 <div class="advanced-search-container">
-    <!-- Enhanced Hero Slideshow Section -->
-    <div class="hero-slideshow-section">
-        <div class="slideshow-container position-relative">
-            <!-- Background Gradient Overlay -->
-            <div class="gradient-overlay"></div>
-
-            <!-- Animated Background Pattern -->
-            <div class="background-pattern">
-                <div class="pattern-circle circle-1"></div>
-                <div class="pattern-circle circle-2"></div>
-                <div class="pattern-circle circle-3"></div>
-            </div>
-
-            <div class="slide-content">
-                <!-- Left side - Enhanced Vehicle image -->
-                <div class="slide-image-section">
-                    <div class="image-container">
-                        <div class="image-glow"></div>
-                        <img [src]="getCurrentHeroVehicle()?.image" [alt]="getCurrentHeroVehicle()?.name"
-                            class="vehicle-image">
-                        <div class="image-reflection"></div>
-                    </div>
-
-                    <!-- Vehicle Stats Cards -->
-                    <div class="stats-cards">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value">{{ getCurrentHeroVehicle()?.range }}</span>
-                                <span class="stat-label">Miles Range</span>
-                            </div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-tachometer-alt"></i>
-                            </div>
-                            <div class="stat-info">
-                                <span class="stat-value">0-60</span>
-                                <span class="stat-label">in 3.2s</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right side - Enhanced Content -->
-                <div class="slide-text-section">
-                    <div class="content-wrapper">
-                        <!-- Badge -->
-                        <div class="hero-badge">
-                            <i class="fas fa-star"></i>
-                            <span>Featured</span>
-                        </div>
-
-                        <div class="slide-header">
-                            <h2 class="hero-title">
-                                <span class="title-highlight">Latest</span> arrivals
-                            </h2>
-                            <p class="hero-subtitle">Discover the future of electric mobility with our premium
-                                collection</p>
-                            <div class="divider">
-                                <div class="divider-line"></div>
-                                <div class="divider-dot"></div>
-                                <div class="divider-line"></div>
-                            </div>
-                        </div>
-
-                        <div class="vehicle-info">
-                            <h3 class="vehicle-name">{{ getCurrentHeroVehicle()?.name }}</h3>
-                            <div class="vehicle-details">
-                                <div class="price-container">
-                                    <span class="price-label">Starting from</span>
-                        <div class="vehicle-price">
-                            {{ getCurrentHeroVehicle()?.price | currency:'USD':'symbol':'1.0-0' }}
-                            <span class="price-suffix">/month</span>
-                        </div>
-                                </div>
-
-                                <!-- Feature Tags -->
-                                <div class="feature-tags">
-                                    <span class="feature-tag">
-                                        <i class="fas fa-leaf"></i>
-                                        Zero Emissions
-                                    </span>
-                                    <span class="feature-tag">
-                                        <i class="fas fa-wifi"></i>
-                                        Smart Connected
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="action-buttons">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-play"></i>
-                                <span>Explore Now</span>
-                                <div class="btn-glow"></div>
-                            </button>
-                            <button class="btn btn-outline" type="button">
-                                <i class="fas fa-search"></i>
-                                <span>Find More</span>
-                            </button>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div class="slide-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill"
-                                    [style.width.%]="((currentSlide + 1) / heroVehicles.length) * 100"></div>
-                            </div>
-                            <span class="progress-text">{{ currentSlide + 1 }} / {{ heroVehicles.length }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Enhanced Navigation Arrows -->
-            <button class="carousel-control prev" (click)="prevSlide()" type="button" aria-label="Previous slide">
-                <div class="control-inner">
-                    <i class="fas fa-chevron-left"></i>
-                </div>
-                <div class="control-ripple"></div>
-            </button>
-            <button class="carousel-control next" (click)="nextSlide()" type="button" aria-label="Next slide">
-                <div class="control-inner">
-                    <i class="fas fa-chevron-right"></i>
-                </div>
-                <div class="control-ripple"></div>
-            </button>
-
-            <!-- Enhanced Slide Indicators -->
-            <div class="slide-indicators">
-                <button *ngFor="let vehicle of heroVehicles; let i = index" class="indicator"
-                    [class.active]="i === currentSlide" (click)="currentSlide = i" type="button"
-                    [attr.aria-label]="'Go to slide ' + (i + 1)">
-                    <div class="indicator-progress"></div>
-                </button>
-            </div>
+    <section class="catalog-intro">
+        <div>
+            <p class="catalog-eyebrow">EVX marketplace</p>
+            <h1>Find the right electric vehicle</h1>
+            <p>Filter the catalog by the practical details that matter, then save, compare, or inspect a listing.</p>
         </div>
-    </div>
+        <div class="catalog-summary" aria-label="Catalog summary">
+            <span><strong>{{ totalItems }}</strong> matching items</span>
+            <span><strong>{{ selectedTypes.join(' + ') }}</strong> selected</span>
+        </div>
+    </section>
 
     <!-- Main Content -->
     <div class="main-content-wrapper">
         <!-- Enhanced Sidebar Filters -->
         <div class="filters-sidebar" [class.mobile-hidden]="!isFiltersVisible">
             <div class="filter-header">
-                <div class="d-flex align-items-center mb-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="d-flex align-items-center">
                     <i class="fas fa-sliders-h me-2"></i>
                     <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <button *ngIf="isMobile" type="button" class="mobile-filter-close" (click)="toggleFilters()" aria-label="Hide filters">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 <p class="small text-muted">Apply filters to your search for better results.</p>
             </div>

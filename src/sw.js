@@ -57,7 +57,7 @@ self.addEventListener('fetch', (event) => {
         }).catch(() => {
           // Return offline fallback for images
           if (event.request.destination === 'image') {
-            return caches.match('/assets/default-car.jpg');
+            return caches.match('/assets/vehicles/renault-scenic.jpg');
           }
         });
       })

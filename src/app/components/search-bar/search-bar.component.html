@@ -1,23 +1,24 @@
-<div class="search-container" #container>
+<div class="search-container">
   <div class="search-input-wrapper">
     <input 
       type="text" 
-      placeholder="What Are You Looking For?" 
+      placeholder="Search by make or model"
+      aria-label="Search by make or model"
       [(ngModel)]="searchQuery"
       (keyup.enter)="performSearch()" 
     />
-    <button class="search-btn" (click)="performSearch()">
+    <button type="button" class="search-btn" (click)="performSearch()" aria-label="Search">
       <i class="fas fa-search"></i>
     </button>
   </div>
   
-  <!-- Search Suggestion Bubbles positioned under search button -->
   <div class="search-suggestions">
-    <span 
+    <button
+      type="button"
       *ngFor="let suggestion of searchSuggestions" 
       class="suggestion-bubble"
       (click)="selectSuggestion(suggestion)">
       {{ suggestion }}
-    </span>
+    </button>
   </div>
 </div>

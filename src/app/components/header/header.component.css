@@ -1,63 +1,95 @@
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 4rem;
-    background: white;
-    height: 16vh;
-    max-height: 110px;
-    border-bottom: 8px solid var(--cyan-color);
+.site-header {
+  position: relative;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+  padding: 0 48px;
+  background: #ffffff;
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.brand-button,
+.icon-btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.brand-button {
+  padding: 0;
 }
 
 .logo {
-    width: 10rem;
-    /* Increased from 7rem to 10rem */
-}
-
-.icon-btn {
-    background: none;
-    border: none;
-    font-size: 1.6rem;
-    cursor: pointer;
-    color: var(--grey-color);
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.icon-btn:hover {
-    color: var(--cyan-color);
-}
-
-.badge {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #ef4444;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 600;
-    min-width: 20px;
-    padding: 0 4px;
+  width: 112px;
+  height: 48px;
+  object-fit: contain;
 }
 
 nav {
-    display: flex;
-    gap: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
-@media (max-width: 768px) {
-    header {
-        padding: 1rem 1rem;
-    }
+.icon-btn {
+  position: relative;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: #32383f;
+  font-size: 1.25rem;
+  border-radius: 6px;
+}
 
-    .logo {
-        width: 7rem;
-        /* Increased from 5rem to 7rem for mobile */
-    }
+.icon-btn:hover {
+  color: #087e8b;
+  background: #edf9fa;
+}
+
+.badge {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  display: grid;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  place-items: center;
+  border-radius: 9px;
+  background: #d64045;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.create-account {
+  width: auto;
+  padding: 0 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    height: 68px;
+    padding: 0 16px;
+  }
+
+  .logo {
+    width: 94px;
+    height: 40px;
+  }
+
+  nav {
+    gap: 6px;
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
 }

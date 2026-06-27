@@ -1,7 +1,7 @@
 <div class="toolbar" *ngIf="shouldShow">
-  <button (click)="navigateToProductDetails()"><i class="fas fa-car"></i></button>
-  <button (click)="performSearch()"><i class="fas fa-search"></i></button>
-  <button (click)="navigateToResources()"><i class="fas fa-file-alt"></i></button>
-  <button (click)="navigateToTcoCalculator()"><i class="fas fa-calculator"></i></button>
-  <button><i class="fas fa-user"></i></button>
+  <button type="button" (click)="navigateHome()" aria-label="Home" title="Home"><i class="fas fa-car"></i></button>
+  <button type="button" (click)="performSearch()" aria-label="Search vehicles" title="Search vehicles"><i class="fas fa-search"></i></button>
+  <button type="button" (click)="navigateToResources()" aria-label="EV resources" title="EV resources"><i class="fas fa-file-alt"></i></button>
+  <button type="button" (click)="navigateToTcoCalculator()" aria-label="TCO calculator" title="TCO calculator"><i class="fas fa-calculator"></i></button>
+  <button type="button" aria-label="Account" title="Account"><i class="fas fa-user"></i></button>
 </div>

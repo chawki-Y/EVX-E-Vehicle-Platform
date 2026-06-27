@@ -1,39 +1,60 @@
 .toolbar {
-    position: fixed;
-    bottom: 27px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    padding: 12px;
-    border-radius: 8px;
-    display: flex;
-    gap: 1rem; /* Adjust gap between buttons */
-    z-index: 2;
+  position: fixed;
+  z-index: 900;
+  bottom: 18px;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(5, 52px);
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  padding: 8px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: rgba(17, 20, 24, 0.94);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.toolbar button {
+  position: relative;
+  display: grid;
+  width: 52px;
+  height: 42px;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.toolbar button:not(:last-child)::after {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.16);
+  content: '';
+}
+
+.toolbar button:hover {
+  color: var(--primary-color);
+  background: rgba(99, 211, 222, 0.08);
+}
+
+@media (max-width: 420px) {
+  .toolbar {
+    bottom: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: calc(100vw - 20px);
+    padding: 6px;
   }
-  
+
   .toolbar button {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: 0.1s ease-in-out;
-    padding: 0 1.5rem;
-    position: relative; /* Ensures the pseudo-element (::after) is positioned correctly */
+    width: 100%;
+    height: 40px;
   }
-  
-  /* Add separator between buttons, but not after the last button */
-  .toolbar button:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 100%;
-    width: 0.5px;
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  
-  .toolbar button:hover {
-    color: var(--cyan-color);
-  }
+}

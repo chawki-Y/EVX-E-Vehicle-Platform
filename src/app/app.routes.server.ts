@@ -38,10 +38,6 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'news/:id',
-    renderMode: RenderMode.Server
-  },
-  {
     path: 'messages-forum/:id',
     renderMode: RenderMode.Server
   },

@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
       limit = 10,
       category,
       featured,
-      published = true,
+      published = 'true',
       search,
       sortBy = 'publishedAt',
       sortOrder = 'DESC',

@@ -51,7 +51,6 @@ import { RouteTransitionService } from './services/route-transition.service';
   `]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'evx-client';
   showToolbar = true;
   showChatButton = true;
   isChatRoute = false;
@@ -75,17 +74,13 @@ export class AppComponent implements OnInit, OnDestroy {
         const isMessagesForumRoute = routePath.startsWith('/messages-forum');
         this.isChatRoute = routePath === '/chat';
 
-        // Customize this logic based on what routes should show/hide the toolbar
         this.showToolbar = true;
         this.showChatButton = !isMessagesForumRoute && !this.isChatRoute;
-        
-        // Update loading text based on route
         this.updateLoadingText(url);
       });
   }
 
   ngOnInit(): void {
-    // Subscribe to loading state from route transition service
     this.routeTransitionService.loading$
       .pipe(takeUntil(this.destroy$))
       .subscribe(loading => {
@@ -99,7 +94,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateLoadingText(url: string): void {
-    // Customize loading text based on the route
     const routeTexts: { [key: string]: string } = {
       '/': 'Loading Home...',
       '/advanced-search': 'Loading Search...',
@@ -111,7 +105,6 @@ export class AppComponent implements OnInit, OnDestroy {
       '/chat': 'Loading Chat...'
     };
 
-    // Check for dynamic routes
     if (url.includes('/product/')) {
       this.loadingText = 'Loading Product Details...';
     } else if (url.includes('/course/')) {

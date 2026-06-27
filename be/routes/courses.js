@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
       category,
       level,
       featured,
-      published = true,
-      active = true,
+      published = 'true',
+      active = 'true',
       search,
       sortBy = 'sortOrder',
       sortOrder = 'ASC'

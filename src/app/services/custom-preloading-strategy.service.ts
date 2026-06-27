@@ -9,16 +9,11 @@ import { mergeMap } from 'rxjs/operators';
 export class CustomPreloadingStrategy implements PreloadingStrategy {
   
   preload(route: Route, load: () => Observable<any>): Observable<any> {
-    // Preload routes that are likely to be visited
     const shouldPreload = this.shouldPreloadRoute(route);
     
     if (shouldPreload) {
-      // Add a small delay to not interfere with initial page load
       return timer(2000).pipe(
-        mergeMap(() => {
-          console.log('Preloading route:', route.path);
-          return load();
-        })
+        mergeMap(() => load())
       );
     }
     
@@ -26,7 +21,6 @@ export class CustomPreloadingStrategy implements PreloadingStrategy {
   }
 
   private shouldPreloadRoute(route: Route): boolean {
-    // Define which routes should be preloaded
     const preloadRoutes = [
       'advanced-search',
       'tco-calculator',

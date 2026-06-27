@@ -1,174 +1,109 @@
-<!-- Floating Background Elements -->
-<div class="floating-elements">
-  <div class="floating-circle circle-1"></div>
-  <div class="floating-circle circle-2"></div>
-  <div class="floating-circle circle-3"></div>
-</div>
+<app-hero-section></app-hero-section>
 
-<app-hero-section></app-hero-section> <!-- Hero section with carousel -->
-
-<!-- Featured Vehicles Section -->
-<section class="featured-vehicles">
+<section class="featured-vehicles" aria-labelledby="featured-title">
   <div class="container">
-    <h2 class="section-title">Featured Electric Vehicles</h2>
-    <p class="section-subtitle">Discover our most popular and highly-rated electric vehicles</p>
-    
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Curated inventory</p>
+        <h2 id="featured-title">Featured electric vehicles</h2>
+      </div>
+      <a routerLink="/advanced-search">View all vehicles <i class="fas fa-arrow-right"></i></a>
+    </div>
+
     <div class="vehicles-grid">
-      <div class="vehicle-card" 
-           *ngFor="let vehicle of featuredVehicles; trackBy: trackByVehicleId"
-           appLazyLoad 
-           (inView)="onImageIntersection(vehicle, $event)">
+      <article class="vehicle-card" *ngFor="let vehicle of featuredVehicles">
         <div class="vehicle-image">
-          <!-- Progressive image loading with lazy loading -->
-          <img 
-            [src]="vehicle.imageLoaded ? vehicle.image : vehicle.imagePlaceholder" 
+          <img
+            [src]="vehicle.image"
             [alt]="vehicle.name"
-            [class.loaded]="vehicle.imageLoaded"
-            [class.loading]="!vehicle.imageLoaded"
             loading="lazy"
-            (load)="onImageLoad(vehicle)"
-            (error)="onImageError(vehicle, $event)"
-            decoding="async">
-          
-          <!-- Loading spinner overlay -->
-          <div class="image-loading-overlay" *ngIf="!vehicle.imageLoaded">
-            <div class="loading-spinner"></div>
-          </div>
-          
-          <div class="badge" [ngClass]="vehicle.badge ? vehicle.badge.toLowerCase().replace(' ', '-') : ''" *ngIf="vehicle.badge">{{vehicle.badge}}</div>
-          <button class="like-btn" [class.liked]="vehicle.isLiked" (click)="toggleLike(vehicle)">
+            decoding="async"
+            (error)="handleImageError($event)">
+          <span class="badge" *ngIf="vehicle.badge">{{ vehicle.badge }}</span>
+          <button
+            type="button"
+            class="like-btn"
+            [class.liked]="vehicle.isLiked"
+            (click)="toggleLike(vehicle)"
+            [attr.aria-label]="(vehicle.isLiked ? 'Remove ' : 'Save ') + vehicle.name">
             <i class="fas fa-heart"></i>
           </button>
         </div>
+
         <div class="vehicle-info">
-          <h3>{{vehicle.name}}</h3>
-          <p class="brand">{{vehicle.brand}}</p>
+          <p class="brand">{{ vehicle.brand }}</p>
+          <h3>{{ vehicle.name }}</h3>
           <div class="rating">
-            <div class="stars">
-              <i class="fas fa-star" *ngFor="let star of getStars(vehicle.rating)"></i>
+            <span class="stars"><i class="fas fa-star" *ngFor="let star of getStars(vehicle.rating)"></i></span>
+            <span>{{ vehicle.rating }} ({{ vehicle.reviews }})</span>
+          </div>
+          <dl class="specs">
+            <div><dt>Range</dt><dd>{{ vehicle.range }} mi</dd></div>
+            <div><dt>Model year</dt><dd>{{ vehicle.year }}</dd></div>
+          </dl>
+          <div class="card-footer">
+            <div class="price">
+              <strong>${{ vehicle.price | number }}</strong>
+              <s *ngIf="vehicle.originalPrice">${{ vehicle.originalPrice | number }}</s>
             </div>
-            <span class="rating-text">{{vehicle.rating}} ({{vehicle.reviews}} reviews)</span>
+            <a [routerLink]="['/product/vehicle', vehicle.id]">View details</a>
           </div>
-          <div class="specs">
-            <span class="range"><i class="fas fa-road"></i> {{vehicle.range}} km</span>
-            <span class="year"><i class="fas fa-calendar"></i> {{vehicle.year}}</span>
-          </div>
-          <div class="price">
-            <span class="current-price">${{vehicle.price | number}}</span>
-            <span class="original-price" *ngIf="vehicle.originalPrice">${{vehicle.originalPrice | number}}</span>
-          </div>
-          <button class="view-details-btn">View Details</button>
         </div>
-      </div>
-    </div>
-    
-    <div class="view-all-container">
-      <button class="view-all-btn" routerLink="/advanced-search">View All Vehicles</button>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- Statistics Section -->
-<section class="statistics">
+<section class="platform-snapshot" aria-label="Platform snapshot">
+  <div class="container snapshot-grid">
+    <div><strong>6</strong><span>curated EV models</span></div>
+    <div><strong>10</strong><span>EV accessories</span></div>
+    <div><strong>3</strong><span>resource formats</span></div>
+    <div><strong>1</strong><span>ownership calculator</span></div>
+  </div>
+</section>
+
+<section class="decision-tools" aria-labelledby="tools-title">
   <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item">
-        <div class="stat-number">500+</div>
-        <div class="stat-label">Electric Vehicles</div>
+    <div class="section-heading compact">
+      <div>
+        <p class="eyebrow">Built around real decisions</p>
+        <h2 id="tools-title">Move from browsing to a shortlist</h2>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">50+</div>
-        <div class="stat-label">Trusted Brands</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">10K+</div>
-        <div class="stat-label">Happy Customers</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">99%</div>
-        <div class="stat-label">Satisfaction Rate</div>
-      </div>
+    </div>
+
+    <div class="tools-grid">
+      <article>
+        <i class="fas fa-sliders-h"></i>
+        <h3>Discover</h3>
+        <p>Filter vehicles and accessories by price, range, condition, brand, and dealer.</p>
+        <a routerLink="/advanced-search">Open advanced search</a>
+      </article>
+      <article>
+        <i class="fas fa-calculator"></i>
+        <h3>Plan</h3>
+        <p>Estimate energy, maintenance, insurance, and depreciation across an ownership period.</p>
+        <a routerLink="/tco-calculator">Use the TCO calculator</a>
+      </article>
+      <article>
+        <i class="fas fa-book-open"></i>
+        <h3>Learn</h3>
+        <p>Explore educational articles, courses, and practical guidance for EV ownership.</p>
+        <a routerLink="/resources">Browse resources</a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- Why Choose Electric Section -->
-<section class="why-electric">
-  <div class="container">
-    <h2 class="section-title">Why Choose Electric?</h2>
-    <div class="benefits-grid">
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <i class="fas fa-leaf"></i>
-        </div>
-        <h3>Eco-Friendly</h3>
-        <p>Zero emissions for a cleaner environment and sustainable future</p>
-      </div>
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <i class="fas fa-dollar-sign"></i>
-        </div>
-        <h3>Cost Effective</h3>
-        <p>Lower operating costs with reduced fuel and maintenance expenses</p>
-      </div>
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <i class="fas fa-bolt"></i>
-        </div>
-        <h3>High Performance</h3>
-        <p>Instant torque and smooth acceleration for superior driving experience</p>
-      </div>
-      <div class="benefit-item">
-        <div class="benefit-icon">
-          <i class="fas fa-cog"></i>
-        </div>
-        <h3>Advanced Technology</h3>
-        <p>Cutting-edge features and smart connectivity for modern lifestyle</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonials Section -->
-<section class="testimonials">
-  <div class="container">
-    <h2 class="section-title">What Our Customers Say</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial-card" *ngFor="let testimonial of testimonials">
-        <div class="testimonial-content">
-          <div class="quote-icon">
-            <i class="fas fa-quote-left"></i>
-          </div>
-          <p>"{{testimonial.content}}"</p>
-          <div class="rating">
-            <i class="fas fa-star" *ngFor="let star of getStars(testimonial.rating)"></i>
-          </div>
-        </div>
-        <div class="testimonial-author">
-          <img [src]="testimonial.avatar" [alt]="testimonial.name" loading="lazy" decoding="async">
-          <div class="author-info">
-            <h4>{{testimonial.name}}</h4>
-            <p>{{testimonial.vehicle}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Call to Action Section -->
 <section class="cta">
-  <div class="container">
-    <div class="cta-content">
-      <h2>Ready to Go Electric?</h2>
-      <p>Join thousands of satisfied customers who made the switch to electric vehicles</p>
-      <div class="cta-buttons">
-        <button class="cta-btn primary" routerLink="/advanced-search">Browse Vehicles</button>
-        <button class="cta-btn secondary" routerLink="/resources">Learn More</button>
-      </div>
+  <div class="container cta-content">
+    <div>
+      <p class="eyebrow">Start with your priorities</p>
+      <h2>Build a practical EV shortlist</h2>
+      <p>Use the catalog and cost tools together to compare more than the sticker price.</p>
     </div>
+    <a routerLink="/advanced-search">Browse the catalog</a>
   </div>
 </section>
 
-<!-- Footer -->
 <app-footer></app-footer>
