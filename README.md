@@ -210,7 +210,3 @@ Vehicle photos are real photographs sourced from Wikimedia Commons under Creativ
 - Add cloud object storage for catalog media.
 - Add deployment workflows for the frontend, API, and managed PostgreSQL.
 - Add dealer onboarding and inventory administration as a separate bounded application.
-
-## License
-
-Application code is available under the [MIT License](LICENSE). Third-party photography remains subject to the licenses documented in the image credits.
